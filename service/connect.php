@@ -19,10 +19,10 @@ class Database {
      * @var string|null
      * @return PDO
      */
-    private $host = "localhost";
-    private $dbname = "jssr_databasex";
-    private $username = "root";
-    private $password = "1234";
+    private $host = DB_HOST;
+    private $dbname = DB_NAME;
+    private $username = DB_USERNAME;
+    private $password = DB_PASSWORD;
     private $conn = null;
 
     public function connect() {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  **** AppzStory Back Office Management System Template ****
  * PHP Login API
@@ -7,9 +8,9 @@
  * @author Yothin Sapsamran (Jame AppzStory Studio)
  */
 header('Content-Type: application/json');
+require '../../config.php';
 require_once '../connect.php';
-$username = $_POST['username'];
-$password = $_POST['password'];
+
 /**
  |--------------------------------------------------------------------------
  | ตรวจสอบ Username ในฐานข้อมูล
@@ -20,17 +21,35 @@ $password = $_POST['password'];
  | ตรวจสอบ Password ว่าตรงกันหรือไม่ 
  | password_verify($password, $user[0]['password'])
  |--------------------------------------------------------------------------
-*/
+ */
+$credencial = array(
+    "username" => $_POST['username'],
+    "password" => $_POST['password'],
+);
+
+$curl = curl_init();
+
+curl_setopt_array($curl, array(
+    CURLOPT_URL => API_URL.'admin/login',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => '',
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => 'POST',
+    CURLOPT_POSTFIELDS => http_build_query($credencial),
+));
+
+$response = curl_exec($curl);
+
+curl_close($curl);
+$login = json_decode($response, true);
+// echo $response;
 /** 
  * ตั้งค่า Session ไว้ใช้งาน 
  */
-$_SESSION['AD_ID'] = '1';
-$_SESSION['AD_FIRSTNAME'] = 'Yothin';
-$_SESSION['AD_LASTNAME'] = 'Sapsamran';
-$_SESSION['AD_USERNAME'] = 'appzstory';
-$_SESSION['AD_IMAGE'] = 'appzstory';
-$_SESSION['AD_STATUS'] = 'admin';
-$_SESSION['AD_LOGIN'] = '2021-06-01 20:00:00';
+$_SESSION['LOGIN'] = $login['data'];
 
 /** 
  * กำหนดข้อมูลสำหรับการ Response ไปยังฝั่ง Client
