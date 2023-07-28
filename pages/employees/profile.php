@@ -31,24 +31,45 @@
         <!-- Main content -->
         <div class="content">
             <div class="container-fluid">
-                <div class="row">
+                <div class="row justify-content-center">
                     <div class="col-12">
                         <div class="card shadow">
                             <div class="card-header border-0 pt-4">
-                                <h4>
+                                <h4> 
                                     <i class="fas fa-users"></i> 
-                                    รายชื่อลูกค้า
+                                    ข้อมูลส่วนตัว
                                 </h4>
-                                <a href="form-create.php" class="btn btn-primary mt-3">
-                                    <i class="fas fa-plus"></i>
-                                    เพิ่มข้อมูล
+                                <a href="./" class="btn btn-info mt-3">
+                                    <i class="fas fa-list"></i>
+                                    กลับหน้าหลัก
                                 </a>
                             </div>
                             <div class="card-body">
-                                <table  id="logs" 
-                                        class="table table-hover" 
-                                        width="100%">
-                                </table>
+                                <div class="px-5">
+                                    <div class="row mb-3">
+                                        <p class="col-xl-1 text-muted">ชื่อ - นามสกุล :</p>
+                                        <div class="col-xl-10">
+                                            <a href="../members/profile.php?id=1">Yothin Sapsamran</a>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <p class="col-xl-1 text-muted">อีเมล :</p>
+                                        <div class="col-xl-10">
+                                            <p>appzstory@gmail.com</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <p class="col-xl-1 text-muted">เบอร์โทรศัพท์ :</p>
+                                        <div class="col-xl-10">
+                                            <p>0868085595</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-title d-block w-100 py-3"> 
+                                    <i class="fas fa-cart-arrow-down"></i>
+                                    ประวัติการสั่งซื้อ
+                                </div>
+                                <table id="logs" class="table table-hover" width="100%"></table>
                             </div>
                         </div>
                     </div>
@@ -75,27 +96,19 @@
     $(function() {
         $.ajax({
             type: "GET",
-            url: "<?= API_URL?>v2/member/all"
+            url: "../../service/members/profile.php"
         }).done(function(data) {
             let tableData = []
-            data.data.forEach(function (item, index){
+            data.response.forEach(function (item, index){
                 tableData.push([    
-                    ++index,
-                    item.username,
-                    item.name,
-                    item.email,
-                    item.mobile,
-                    `<a href="profile.php?id=${item.id}" class="btn btn-info">
-                        <i class="fas fa-search"></i> รายละเอียด
-                    </a>`,
-                    `<div class="btn-group" role="group">
-                        <a href="form-edit.php?id=${item.id}" type="button" class="btn btn-warning text-white">
-                            <i class="far fa-edit"></i> แก้ไข
-                        </a>
-                        <button type="button" class="btn btn-danger" id="delete" data-id="${item.id}">
-                            <i class="far fa-trash-alt"></i> ลบ
-                        </button>
-                    </div>`
+                    `<a href="../orders/info.php?o_id=${item.o_id}" class="btn btn-outline-primary p-1 "> ${item.o_id} </button>`,
+                    `<span class="badge badge-success"> ${item.status ? 'ชำระเงินแล้ว': 'รอชำระเงิน'} </span>`,
+                    item.total,
+                    `<span class="text-muted small"> 1 ชั่วโมงที่ผ่านมา <br> 10 พ.ค. 64 · 16:56 น.</span>`,
+                    `<span class="text-muted"> ${item.ps} </span>  `,
+                    `<a href="../orders/info.php?o_id=${item.o_id}" class="btn btn-info">
+                        <i class="fas fa-search"></i> ดูข้อมูล
+                    </a>`
                 ])
             })
             initDataTables(tableData)
@@ -113,42 +126,13 @@
             $('#logs').DataTable( {
                 data: tableData,
                 columns: [
-                    { title: "ลำดับ" , className: "align-middle"},
-                    { title: "ชื่อผู้ใช้", className: "align-middle"},
-                    { title: "ชื่อ", className: "align-middle"},
-                    { title: "อีเมล", className: "align-middle"},
-                    { title: "เบอร์โทรศัพท์", className: "align-middle"},
-                    { title: "ข้อมูลส่วนตัว", className: "align-middle"},
+                    { title: "ใบสั่งซื้อ", className: "align-middle"},
+                    { title: "สถานะ" , className: "align-middle"},
+                    { title: "ราคารวม / บาท", className: "align-middle"},
+                    { title: "วันที่สั่งซื้อ", className: "align-middle"},
+                    { title: "หมายเหตุ", className: "align-middle"},
                     { title: "จัดการ", className: "align-middle"}
                 ],
-                initComplete: function () {
-                    $(document).on('click', '#delete', function(){ 
-                        let id = $(this).data('id')
-                        Swal.fire({
-                            text: "คุณแน่ใจหรือไม่...ที่จะลบรายการนี้?",
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonText: 'ใช่! ลบเลย',
-                            cancelButtonText: 'ยกเลิก'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                $.ajax({  
-                                    type: "DELETE",  
-                                    url: "../../service/members/delete.php",  
-                                    data: { id: id }
-                                }).done(function() {
-                                    Swal.fire({
-                                        text: 'รายการของคุณถูกลบเรียบร้อย',
-                                        icon: 'success',
-                                        confirmButtonText: 'ตกลง',
-                                    }).then((result) => {
-                                        location.reload()
-                                    })
-                                })
-                            }
-                        })
-                    })
-                },
                 responsive: {
                     details: {
                         display: $.fn.dataTable.Responsive.display.modal( {

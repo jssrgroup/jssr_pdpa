@@ -7,22 +7,6 @@
  * @author Yothin Sapsamran (Jame AppzStory Studio)
  */
 require_once('../authen.php');
-echo '<pre>', print_r($_SESSION, 1), '</pre>', '<br/>';
-
-// date_default_timezone_set('Asia/Bangkok');
-$currentTimestamp = time(); // Current timestamp in the New York timezone
-echo $currentTimestamp, '<br/>';
-echo $_SESSION['LOGIN']['user']['lastLogin'], '<br/>';
-$timestamp = $_SESSION['LOGIN']['user']['lastLogin'];
-
-// Convert timestamp to date format
-$dateFormat = 'd/m/Y H:i:s'; // Change this format to suit your needs
-
-// Use the date() function to format the timestamp
-$formattedDate = date($dateFormat, $timestamp);
-
-// Output the formatted date
-echo $formattedDate, '<br/>';
 
 ?>
 <!DOCTYPE html>

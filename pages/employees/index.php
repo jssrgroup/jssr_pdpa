@@ -75,16 +75,16 @@
     $(function() {
         $.ajax({
             type: "GET",
-            url: "<?= API_URL?>v2/member/all"
+            url: "../../service/members/"
         }).done(function(data) {
             let tableData = []
-            data.data.forEach(function (item, index){
+            data.response.forEach(function (item, index){
                 tableData.push([    
                     ++index,
-                    item.username,
-                    item.name,
+                    item.fisrt_name,
+                    item.last_name,
                     item.email,
-                    item.mobile,
+                    item.phone,
                     `<a href="profile.php?id=${item.id}" class="btn btn-info">
                         <i class="fas fa-search"></i> รายละเอียด
                     </a>`,
@@ -114,8 +114,8 @@
                 data: tableData,
                 columns: [
                     { title: "ลำดับ" , className: "align-middle"},
-                    { title: "ชื่อผู้ใช้", className: "align-middle"},
                     { title: "ชื่อ", className: "align-middle"},
+                    { title: "นามสกุล", className: "align-middle"},
                     { title: "อีเมล", className: "align-middle"},
                     { title: "เบอร์โทรศัพท์", className: "align-middle"},
                     { title: "ข้อมูลส่วนตัว", className: "align-middle"},

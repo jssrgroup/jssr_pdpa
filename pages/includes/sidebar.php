@@ -22,8 +22,8 @@
 
     <ul class="navbar-nav ml-auto ">
         <li class="nav-item d-md-none d-block">
-            <a href="../dashboard/">
-                <img src="../../assets/images/AdminLogo.png" 
+            <a href="<?= BASE_URL?>pages/dashboard/">
+                <img src="<?= BASE_URL?>assets/images/AdminLogo.png" 
                     alt="Admin Logo" 
                     width="50px"
                     class="img-circle elevation-3">
@@ -31,62 +31,74 @@
             </a>
         </li>
         <li class="nav-item d-md-block d-none">
-            <a class="nav-link">เข้าสู่ระบบครั้งล่าสุด: <?php echo date('d/m/Y H:i:s', $_SESSION['LOGIN']['user']['lastLogin']) ?>  </a>
+            <a class="nav-link">เข้าสู่ระบบครั้งล่าสุด: <?= date('d/m/Y H:i:s', $_SESSION['LOGIN']['user']['lastLogin']) ?>  </a>
         </li>
     </ul>
 </nav>
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <a href="../dashboard/" class="brand-link">
-        <img src="../../assets/images/AdminLogo.png" 
+    <a href="<?= BASE_URL?>pages/dashboard/" class="brand-link">
+        <img src="<?= BASE_URL?>assets/images/AdminLogo.png" 
              alt="Admin Logo" 
              class="brand-image img-circle elevation-3">
-        <span class="brand-text font-weight-light">AppzStory Admin</span>
+        <span class="brand-text font-weight-light">PDPA System</span>
     </a>
     <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="../../assets/images/avatar5.png" class="img-circle elevation-2" alt="User Image">
+                <img src="<?= BASE_URL?>assets/images/avatar5.png" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="../manager/" class="d-block"> <?php echo $_SESSION['LOGIN']['user']['name'] ?> </a>
+                <a href="<?= BASE_URL?>pages/manager/" class="d-block"> <?php echo $_SESSION['LOGIN']['user']['name'] ?> </a>
             </div>
         </div>
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
-                    <a href="../dashboard/" class="nav-link <?php echo isActive('dashboard') ?>">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <a href="<?= BASE_URL?>pages/dashboard/" class="nav-link <?php echo isActive('dashboard') ?>">
+                        <i class="nav-icon fas fa-tachometer-alt text-blue"></i>
                         <p>หน้าหลัก</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="../manager/" class="nav-link <?php echo isActive('manager') ?>">
-                        <i class="nav-icon fas fa-user-cog"></i>
+                    <a href="<?= BASE_URL?>pages/manager/" class="nav-link <?php echo isActive('manager') ?>">
+                        <i class="nav-icon fas fa-user-cog text-cyan"></i>
                         <p>ผู้ดูแลระบบ</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="../members/" class="nav-link <?php echo isActive('members') ?>">
-                        <i class="nav-icon fas fa-users"></i>
+                    <a href="<?= BASE_URL?>pages/employees/" class="nav-link <?php echo isActive('employees') ?>">
+                        <i class="nav-icon fas fa-user text-yellow"></i>
+                        <p>รายชื่อพนักงาน</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= BASE_URL?>pages/members/" class="nav-link <?php echo isActive('members') ?>">
+                        <i class="nav-icon fas fa-users text-indigo"></i>
                         <p>รายชื่อลูกค้า</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="../products/" class="nav-link <?php echo isActive('products') ?>">
+                    <a href="<?= BASE_URL?>pages/products/" class="nav-link <?php echo isActive('products') ?>">
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>รายการสินค้า</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="../orders/" class="nav-link <?php echo isActive('orders') ?>">
+                    <a href="<?= BASE_URL?>pages/orders/" class="nav-link <?php echo isActive('orders') ?>">
                         <i class="nav-icon fas fa-cart-arrow-down"></i>
                         <p>รายการสั่งซื้อ</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="<?= BASE_URL?>pages/documents/" class="nav-link <?php echo isActive('documents') ?>">
+                        <i class="nav-icon fas fa-solid fa-file text-maroon"></i>
+                        <p>เอกสาร</p>
+                    </a>
+                </li>
                 <li class="nav-header">บัญชีของเรา</li>
                 <li class="nav-item">
-                    <a href="../logout.php" id="logout" class="nav-link">
+                    <a href="<?= BASE_URL?>pages/logout.php" id="logout" class="nav-link">
                         <i class="nav-icon fas fa-sign-out-alt"></i>
                         <p>ออกจากระบบ</p>
                     </a>
