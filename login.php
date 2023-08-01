@@ -6,13 +6,14 @@
  * @link https://appzstory.dev
  * @author Yothin Sapsamran (Jame AppzStory Studio)
  */
+require "config.php";
 ?>
 <!DOCTYPE html>
 <html>
 
 <head>
   <meta charset="UTF-8">
-  <title>AppzStory Admin</title>
+  <title>Login | <?= APP_NAME ?></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.ico">
   <!-- stylesheet -->
@@ -29,7 +30,7 @@
       <div class="row justify-content-center">
         <section class="col-lg-6">
           <div class="card shadow p-3 p-md-4">
-            <h1 class="text-center text-primary font-weight-bold">PDPA System</h1>
+            <h1 class="text-center text-primary font-weight-bold"><?= APP_NAME?></h1>
             <h4 class="text-center">เข้าสู่ระบบหลังบ้าน</h4>
             <div class="card-body">
               <!-- HTML Form Login -->
@@ -77,44 +78,44 @@
         e.preventDefault()
         $.ajax({
           type: "POST",
-          url: "service/auth/login.php",
+          url: "<?= BASE_URL?>service/auth/login.php",
           data: $(this).serialize()
         }).done(function(resp) {
           console.log(resp);
           toastr.success('เข้าสู่ระบบเรียบร้อย')
           setTimeout(() => {
-            location.href = 'pages/dashboard/'
+            location.href = '<?= BASE_URL?>pages/dashboard/'
           }, 800)
         }).fail(function(resp) {
           toastr.error('ไม่สามารถเข้าสู่ระบบได้')
         })
       })
 
-      $(".acc-ia").click(function(){
+      $(".acc-ia").click(function() {
         $("input[name='username']").val('supalerk')
         $("input[name='password']").val('Supalerk@9598X')
         $("#formLogin").submit()
       })
 
-      $(".acc-am").click(function(){
+      $(".acc-am").click(function() {
         $("input[name='username']").val('anusorn')
         $("input[name='password']").val('Anusorn@9560')
         $("#formLogin").submit()
       })
 
-      $(".acc-acc").click(function(){
+      $(".acc-acc").click(function() {
         $("input[name='username']").val('ann')
         $("input[name='password']").val('Ann@74253')
         $("#formLogin").submit()
       })
 
-      $(".acc-law").click(function(){
+      $(".acc-law").click(function() {
         $("input[name='username']").val('ranai2')
         $("input[name='password']").val('rp@1964L')
         $("#formLogin").submit()
       })
 
-      $(".acc-hr").click(function(){
+      $(".acc-hr").click(function() {
         $("input[name='username']").val('hrgroup')
         $("input[name='password']").val('Jssr@hr100')
         $("#formLogin").submit()

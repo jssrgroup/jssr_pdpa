@@ -50,6 +50,51 @@ $login = json_decode($response, true);
  * ตั้งค่า Session ไว้ใช้งาน 
  */
 $_SESSION['LOGIN'] = $login['data'];
+// Array
+// (
+//     [LOGIN] => Array
+//         (
+//             [access_token] => eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hZG1pblwvbG9naW4iLCJpYXQiOjE2OTA2MDQxOTIsImV4cCI6MTY5MDYwNzc5MiwibmJmIjoxNjkwNjA0MTkyLCJqdGkiOiJsZUZaVXAxdVNKdDJTQTBMIiwic3ViIjo3MSwicHJ2IjoiZjJlZmE3NDk1OTU1NjFmYTI2M2RmYTM4ZDEwZWM3M2RlNjg2MjJhYiIsInVzZXJuYW1lIjoiYW51c29ybiIsImVtcGlkIjoiQUlFNTYtNTYtMDMwIn0.YyYTgw-8XTDvgp3EgOfrzSRHrvfY6ugQB5nWYWfKf8o
+//             [user] => Array
+//                 (
+//                     [id] => 71
+//                     [username] => anusorn
+//                     [empId] => AIE56-56-030
+//                     [name] => นายอนุสรณ์  บุญเขตต์
+//                     [department] => AM
+//                     [email] => 
+//                     [phone] => 
+//                     [status] => 1
+//                     [statusAdmin] => 0
+//                     [lastLogin] => 1690604192
+//                     [accessList] => Array
+//                         (
+//                             [0] => 5
+//                             [1] => 6
+//                             [2] => 7
+//                             [3] => 8
+//                             [4] => 9
+//                             [5] => 25
+//                             [6] => 33
+//                         )
+
+//                     [accessRegister] => 
+//                     [accessInspection] => 
+//                     [accessGeneral] => 
+//                     [role] => Array
+//                         (
+//                             [userId] => 71
+//                             [depId] => 2
+//                             [roleId] => 3
+//                             [status] => 1
+//                             [isDelete] => 0
+//                         )
+
+//                 )
+
+//         )
+
+// )
 
 /** 
  * กำหนดข้อมูลสำหรับการ Response ไปยังฝั่ง Client
