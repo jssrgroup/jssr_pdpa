@@ -76,25 +76,29 @@ require_once('../authen.php');
         $(function() {
             $.ajax({
                 type: "GET",
-                url: "<?= API_URL ?>v2/userManagement/all"
+                url: "<?= API_URL ?>v2/admin/all"
             }).done(function(data) {
-                // console.log(data.data);
+                console.log(data.data);
                 let tableData = []
                 data.data.forEach(function(item, index) {
+                    const d = item.lastLogin && new Date(item.lastLogin * 1000)
                     tableData.push([
                         ++index,
-                        item.user,
-                        item.dep,
-                        item.role,
-                        `<span class="badge badge-info">${item.status}</span>`,
+                        item.username,
+                        item.name,
+                        item.phone,
+                        item.email,
+                        // item.lastLogin,
+                        d && `${d.getDate()}/${d.getMonth()}/${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
+                        `<span class="badge badge-info">${item.statusAdmin ? 'Admin': 'User'}</span>`,
                         `<div class="btn-group" role="group">
-                            <a href="<?= BASE_URL?>pages/manager/form-edit.php?id=${item.id}" type="button" class="btn btn-warning text-white">
-                                <i class="far fa-edit"></i> แก้ไข
-                            </a>
-                            <button type="button" class="btn btn-danger" id="delete" data-id="${item.id}" data-index="${index}">
-                                <i class="far fa-trash-alt"></i> ลบ
-                            </button>
-                        </div>`
+                        <a href="form-edit.php?id=${item.id}" type="button" class="btn btn-warning text-white">
+                            <i class="far fa-edit"></i> แก้ไข
+                        </a>
+                        <button type="button" class="btn btn-danger" id="delete" data-id="${item.id}" data-index="${index}">
+                            <i class="far fa-trash-alt"></i> ลบ
+                        </button>
+                    </div>`
                     ])
                 })
                 initDataTables(tableData)
@@ -120,15 +124,23 @@ require_once('../authen.php');
                             className: "align-middle"
                         },
                         {
-                            title: "แผนก",
+                            title: "ชื่อจริง",
+                            className: "align-middle"
+                        },
+                        {
+                            title: "นามสกุล",
+                            className: "align-middle"
+                        },
+                        {
+                            title: "อีเมล",
+                            className: "align-middle"
+                        },
+                        {
+                            title: "ใช้งานล่าสุด",
                             className: "align-middle"
                         },
                         {
                             title: "สิทธิ์เข้าใช้งาน",
-                            className: "align-middle"
-                        },
-                        {
-                            title: "สถานะ",
                             className: "align-middle"
                         },
                         {
@@ -150,7 +162,10 @@ require_once('../authen.php');
                                 if (result.isConfirmed) {
                                     $.ajax({
                                         type: "DELETE",
-                                        url: `<?= API_URL?>v2/userManagement/${id}/delete`,
+                                        url: "../../service/manager/delete.php",
+                                        data: {
+                                            id: id
+                                        }
                                     }).done(function() {
                                         Swal.fire({
                                             text: 'รายการของคุณถูกลบเรียบร้อย',

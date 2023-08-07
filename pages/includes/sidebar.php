@@ -61,6 +61,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="<?= BASE_URL?>pages/useradmin/" class="nav-link <?php echo isActive('useradmin') ?>">
+                        <i class="nav-icon fas fa-user-cog text-maroon"></i>
+                        <p>useradmin</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="<?= BASE_URL?>pages/manager/" class="nav-link <?php echo isActive('manager') ?>">
                         <i class="nav-icon fas fa-user-cog text-cyan"></i>
                         <p>ผู้ดูแลระบบ</p>
