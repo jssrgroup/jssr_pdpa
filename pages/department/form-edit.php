@@ -37,7 +37,7 @@ require_once('../authen.php');
                             <div class="card shadow">
                                 <div class="card-header border-0 pt-4">
                                     <h4>
-                                        <i class="fas fa-user-cog"></i>
+                                        <i class="fas fa-building"></i>
                                         แก้ไขข้อมูลผู้ดูแล
                                     </h4>
                                     <a href="./" class="btn btn-info my-3 ">
