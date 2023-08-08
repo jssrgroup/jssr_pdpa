@@ -51,11 +51,11 @@ require_once('../authen.php');
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label>ค้นหารายชื่อ</label>
-                                                    <select class="custom-select selectSearch" name="user_id" data-placeholder="ค้นหาด้วยชื่อ หรือ เบอร์โทร">
+                                                    <select class="custom-select selectSearch" name="user_id" id="user" data-placeholder="ค้นหาด้วยชื่อ หรือ เบอร์โทร">
                                                         <option selected="selected"></option>
                                                         <option value="99" selected>AppzStory</option>
                                                         <option>Jame</option>
-                                                        <option>Ethan Winters</option>
+                                                        <option value="66" >Ethan Winters</option>
                                                         <option>Rosemary</option>
                                                         <option>Chris Redfield</option>
                                                     </select>
@@ -140,6 +140,7 @@ require_once('../authen.php');
                     });
                 })
             });
+            $("#user").val(66).trigger("change");
         });
     </script>
 

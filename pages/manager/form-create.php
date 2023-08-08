@@ -77,7 +77,8 @@ require_once('../authen.php');
                                             <div class="col-md-3 offset-3">
                                                 <div class="form-group">
                                                     <label for="role_id">สิทธิ์การใช้งาน</label>
-                                                    <select class="form-control" name="role_id" id="role_id" required>
+                                                    
+                                                    
                                                         <option value disabled selected>กำหนดสิทธิ์</option>
                                                         <option value="1">Super Admin</option>
                                                         <option value="2">Admin</option>
