@@ -73,6 +73,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="<?= BASE_URL?>pages/department/" class="nav-link <?php echo isActive('department') ?>">
+                        <i class="nav-icon fas fa-building text-teal"></i>
+                        <p>แผนก</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="<?= BASE_URL?>pages/employees/" class="nav-link <?php echo isActive('employees') ?>">
                         <i class="nav-icon fas fa-user text-yellow"></i>
                         <p>รายชื่อพนักงาน</p>
