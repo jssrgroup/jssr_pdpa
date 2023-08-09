@@ -1,11 +1,4 @@
 <?php
-
-/**
- * Page Manager
- * 
- * @link https://appzstory.dev
- * @author Yothin Sapsamran (Jame AppzStory Studio)
- */
 require_once('../authen.php');
 // echo '<pre>', print_r($_SESSION, 1), '</pre>';
 ?>
@@ -53,31 +46,19 @@ require_once('../authen.php');
                                 <form id="formData" enctype="multipart/form-data">
                                     <div class="card-body">
                                         <div class="form-row">
-                                            <div class="form-group col-md-2">
+                                            <div class="form-group col-md-3">
                                                 <label for="doc_type">ประเภทเอกสาร</label>
-                                                <select class="custom-select mb-3 select2" id="doc_type" name="doc_type">
-                                                    <option disabled selected>เลือกประเภทเอกสาร</option>
-                                                    <option value="1">เอกสารบริษัท</option>
-                                                    <option value="2">เอกสารพนักงาน</option>
-                                                    <option value="3">เอกสารลูกค้า</option>
-                                                    <option value="4">เอกสารอื่นๆ</option>
-                                                </select>
+                                                <select class="custom-select mb-3 select2" id="doc_type" name="doc_type" data-placeholder="ค้นหาด้วยชื่อ หรือ รหัส"></select>
                                             </div>
-                                            <div class="form-group col-md-2">
+                                            <div class="form-group col-md-3">
                                                 <label for="doc_type">เอกสาร</label>
-                                                <select class="custom-select mb-3 select2" id="doc_type_det" name="doc_type_det">
-                                                    <option disabled selected>เลือกประเภทเอกสาร</option>
-                                                    <option value="1">เอกสารบริษัท</option>
-                                                    <option value="2">เอกสารพนักงาน</option>
-                                                    <option value="3">เอกสารลูกค้า</option>
-                                                    <option value="4">เอกสารอื่นๆ</option>
-                                                </select>
+                                                <select class="custom-select mb-3 select2" id="doc_type_det" name="doc_type_det" data-placeholder="ค้นหาด้วยชื่อ หรือ รหัส"></select>
                                             </div>
-                                            <div class="form-group col-md-2">
+                                            <div class="form-group col-md-2 d-none">
                                                 <label>ค้นหารายชื่อลูกค้า</label>
-                                                <select class="custom-select select2" id="refId" name="refId" data-placeholder="ค้นหาด้วยชื่อ หรือ เบอร์โทร">
-                                                    <option selected="selected"></option>
-                                                    <option value="0">None</option>
+                                                <select class="custom-select select2" id="refId" name="refId" data-placeholder="ค้นหาด้วยชื่อ หรือ รหัส">
+                                                    <option></option>
+                                                    <option value="0" selected="selected">None</option>
                                                     <!-- <option>Jame</option>
                                                     <option>Ethan Winters</option>
                                                     <option>Rosemary</option>
@@ -161,6 +142,8 @@ require_once('../authen.php');
 
     <script>
         const depId = <?= $_SESSION['LOGIN']['user']['role']['depId'] ?>;
+        const userId = <?= $_SESSION['LOGIN']['user']['role']['userId'] ?>;
+
         $(function() {
             bsCustomFileInput.init();
             // console.log(bsCustomFileInput);
@@ -185,10 +168,10 @@ require_once('../authen.php');
 
                 // console.log('Selected Value: ' + selectedValue);
                 // console.log('Selected Text: ' + selectedText);
-                getDataDoc(depId, selectedValue)
+                getDataDoc(depId, 0, selectedValue)
             });
 
-            $('#formData').on('submit', function(e) {
+            $('#formDataxxx').on('submit', function(e) {
                 e.preventDefault();
                 // $.ajax({
                 //     type: 'POST',
@@ -241,7 +224,7 @@ require_once('../authen.php');
                             icon: 'success',
                             confirmButtonText: 'ตกลง',
                         }).then((result) => {
-                            location.assign('<?= BASE_URL ?>pages/documents');
+                            location.assign('<?= BASE_URL ?>pages/documents/');
                         });
                     },
                     error: function(xhr, status, error) {
@@ -251,28 +234,30 @@ require_once('../authen.php');
                 });
             });
 
-            $('#formDataxxx').validate({
+            $('#formData').submit(function(e) {
+                e.preventDefault();
+            }).validate({
                 rules: {
-                    docType: {
+                    doc_type: {
                         required: true,
                     },
-                    docTypeDet: {
+                    doc_type_det: {
                         required: true,
                     },
-                    refId: {
-                        required: true,
-                    },
+                    // refId: {
+                    //     required: true,
+                    // },
                 },
                 messages: {
                     docType: {
-                        required: "Please select document type",
+                        required: "เลือก ประเภทเอกสาร",
                     },
                     docTypeDet: {
-                        required: "Please provide a password",
+                        required: "เลือก เอกสาร",
                     },
-                    refId: {
-                        required: "Please provide a password",
-                    },
+                    // refId: {
+                    //     required: "เลือก บุคคลอ้างอิง",
+                    // },
                 },
                 errorElement: 'span',
                 errorPlacement: function(error, element) {
@@ -284,32 +269,66 @@ require_once('../authen.php');
                 },
                 unhighlight: function(element, errorClass, validClass) {
                     $(element).removeClass('is-invalid');
+                },
+                submitHandler: function(form) {
+                    // console.log($('#formData').serialize())
+                    const data = $('#formData').serializeObject();
+      
+                    const fdata = new FormData();
+                    fdata.append("fileName", file.files[0]);
+                    fdata.append("imageName", data.doc_name);
+                    fdata.append("expireDate", formatDate(data.expire));
+                    fdata.append("refId", data.refId);
+                    fdata.append("depId", depId);
+                    fdata.append("docType", data.doc_type);
+                    fdata.append("userId", userId);
+                    console.log(fdata);
+  
+                    $.ajax({
+                        url: '<?= API_URL ?>v2/document', // Replace "upload.php" with the URL to your server-side file handling script
+                        type: "POST",
+                        data: fdata,
+                        processData: false, // Prevent jQuery from processing the data
+                        contentType: false, // Prevent jQuery from setting the Content-Type header
+                        success: function(response) {
+                            Swal.fire({
+                                text: 'เพิ่มข้อมูลเรียบร้อย',
+                                icon: 'success',
+                                confirmButtonText: 'ตกลง',
+                            }).then((result) => {
+                                location.assign('<?= BASE_URL ?>pages/documents');
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error occurred:", error);
+                        }
+                    });
                 }
             });
-            $.validator.setDefaults({
-                submitHandler: function() {
-                    console.log($(this).serialize())
-                    alert("Form successful submitted!");
-                    e.preventDefault()
-                    // $.ajax({
-                    //     type: 'POST',
-                    //     url: '<//?= API_URL ?>v2/department/add',
-                    //     data: $('#formData').serialize()
-                    // }).done(function(resp) {
-                    //     Swal.fire({
-                    //         text: 'เพิ่มข้อมูลเรียบร้อย',
-                    //         icon: 'success',
-                    //         confirmButtonText: 'ตกลง',
-                    //     }).then((result) => {
-                    //         location.assign('<//?= BASE_URL ?>pages/department');
-                    //     });
-                    // })
-                }
-            });
+            // $.validator.setDefaults({
+            //     submitHandler: function() {
+            //         console.log($(this).serialize())
+            //         alert("Form successful submitted!");
+            //         e.preventDefault()
+            //         // $.ajax({
+            //         //     type: 'POST',
+            //         //     url: '<//?= API_URL ?>v2/department/add',
+            //         //     data: $('#formData').serialize()
+            //         // }).done(function(resp) {
+            //         //     Swal.fire({
+            //         //         text: 'เพิ่มข้อมูลเรียบร้อย',
+            //         //         icon: 'success',
+            //         //         confirmButtonText: 'ตกลง',
+            //         //     }).then((result) => {
+            //         //         location.assign('<//?= BASE_URL ?>pages/department');
+            //         //     });
+            //         // })
+            //     }
+            // });
             // selectSearch()
             // selectDataSearch(0)
-            getDataDocType(depId)
-            getDataDoc(depId, 0)
+            getDataDocType(depId, 0)
+            getDataDoc(depId, 0, 0)
         });
 
         function selectDataSearch(id) {
@@ -339,38 +358,36 @@ require_once('../authen.php');
         }
 
 
-        function getDataDocType(id) {
+        function getDataDocType(depId, id) {
             // console.log(el);
             $.ajax({
-                url: "<?= API_URL ?>" + `v2/documentType/${id}/parent`,
+                url: "<?= API_URL ?>" + `v2/documentType/${depId}/parent`,
                 method: "GET",
                 success: function(result) {
                     // console.log(result);
                     $("#doc_type").html("");
-                    $("#doc_type").append(
-                        `<option></option>`
-                    );
+                    $("#doc_type").append(`<option></option>`);
                     $.each(result.data, function(index, ref) {
-                        // var select = "";
-                        // if (ref.id == id) {
-                        //     select = ' selected = "selected"';
-                        // }
+                        var select = "";
+                        if (ref.id == id) {
+                            select = ' selected = "selected"';
+                        }
                         $("#doc_type").append(
                             '<option value="' +
                             ref.id +
                             '"' +
-                            // select +
-                            `>${ref.desc} [${ref.expire}]</option>`
+                            select +
+                            `>${ref.desc} [${ref.expire}:${ref.id}]</option>`
                         );
                     });
                 },
             });
         }
 
-        function getDataDoc(id, doc) {
+        function getDataDoc(depId, id, doc) {
             // console.log(el);
             $.ajax({
-                url: "<?= API_URL ?>" + `v2/documentType/${id}/all/${doc}`,
+                url: "<?= API_URL ?>" + `v2/documentType/${depId}/all/${doc}`,
                 method: "GET",
                 success: function(result) {
                     // console.log(result);
@@ -379,16 +396,16 @@ require_once('../authen.php');
                         `<option></option>`
                     );
                     $.each(result.data, function(index, ref) {
-                        // var select = "";
-                        // if (ref.id == id) {
-                        //     select = ' selected = "selected"';
-                        // }
+                        var select = "";
+                        if (ref.id == id) {
+                            select = ' selected = "selected"';
+                        }
                         $("#doc_type_det").append(
                             '<option value="' +
                             ref.id +
                             '"' +
-                            // select +
-                            `>${ref.desc} [${ref.expire}]</option>`
+                            select +
+                            `>${ref.desc} [${ref.expire}:${ref.id}]</option>`
                         );
                     });
                 },
@@ -418,7 +435,7 @@ require_once('../authen.php');
             const day = parts[1];
             const month = parts[0];
             const year = parts[2];
-            
+
             return `${year}-${month}-${day}`;
 
             // Create a new Date object (months are 0-based in JavaScript)

@@ -72,26 +72,36 @@ require_once('../authen.php');
     <script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 
     <script>
+        const url = '<?= API_URL ?>'
+        const depId = '<?= $_SESSION['LOGIN']['user']['role']['depId']  ?>'
         $(function() {
             $.ajax({
                 type: "GET",
-                url: "<?= API_URL ?>v2/document/all/<?= $_SESSION['LOGIN']['user']['role']['depId']  ?>"
+                url: `${url}v2/document/${depId}/all`
             }).done(function(data) {
                 let tableData = []
                 data.data.forEach(function(item, index) {
                     tableData.push([
-                        `<span class="btn btn-outline-${item.ref_doc_type_id==1?'success':item.ref_doc_type_id==2?'info':item.ref_doc_type_id==3?'warning':'primary'}"> ${item.ref_doc_type} </span>`,
+                        // `<span class="btn btn-outline-${item.ref_doc_type_id==1?'success':item.ref_doc_type_id==2?'info':item.ref_doc_type_id==3?'warning':'primary'}"> ${item.ref_doc_type} </span>`,
+                        // `<span class="btn btn-outline-info"> ${item.ref_doc_type}[${item.id}] </span>`,
+                        item.ref_doc_type,
+                        item.ref_doc,
                         item.ref_dep,
                         item.image_name,
-                        `<a href="../members/profile.php?id=${item.mem_id}">
-                            ${item.file_name}
-                        </a>`,
-                        item.ref,
+                        // `<a href="../members/profile.php?id=${item.mem_id}">
+                        //     ${item.file_name}
+                        // </a>`,
+                        // item.ref,
                         `<span class="text-muted small">${item.expire_date_at}</span>`,
                         `<span class="text-muted"> ${item.ref_user} </span>  `,
                         // `<a href="info.php?o_id=${item.id}" class="btn btn-info">
                         //     <i class="fas fa-search"></i> ดูข้อมูล
-                        // </a>`
+                        // </a>`,
+                        `<div class="btn-group" role="group">
+                            <button type="button" class="btn btn-info" id="preview" data-file-nane="${item.file_name}">
+                                <i class="far fa-eye"></i> ดูู
+                            </button>
+                        </div>`
                     ])
                 })
                 initDataTables(tableData)
@@ -113,6 +123,10 @@ require_once('../authen.php');
                             className: "align-middle"
                         },
                         {
+                            title: "เอกสาร",
+                            className: "align-middle"
+                        },
+                        {
                             title: "แผนก",
                             className: "align-middle"
                         },
@@ -120,14 +134,14 @@ require_once('../authen.php');
                             title: "ชื่อเอกสาร",
                             className: "align-middle"
                         },
-                        {
-                            title: "ชื่อไฟล์เอกสาร",
-                            className: "align-middle"
-                        },
-                        {
-                            title: "อ้างอิง",
-                            className: "align-middle"
-                        },
+                        // {
+                        //     title: "ชื่อไฟล์เอกสาร",
+                        //     className: "align-middle"
+                        // },
+                        // {
+                        //     title: "อ้างอิง",
+                        //     className: "align-middle"
+                        // },
                         {
                             title: "วันที่เอกสารหมดอายุ",
                             className: "align-middle"
@@ -136,11 +150,50 @@ require_once('../authen.php');
                             title: "ผู้บันทึก",
                             className: "align-middle"
                         },
-                        // {
-                        //     title: "จัดการ",
-                        //     className: "align-middle"
-                        // }
+                        {
+                            title: "จัดการ",
+                            className: "align-middle"
+                        }
                     ],
+                    initComplete: function() {
+                        $(document).on('click', '#preview', function() {
+                            const fileName = $(this).data('file-nane')
+                            // console.log(fileName);
+                            $.ajax({
+                                type: "GET",
+                                url: `${url}v2/document/${fileName}`,
+                            }).done(function(data) {
+                                // console.log(data); // แสดงข้อมูล JSON จาก then ข้างบน
+                                // console.log(data.url); // แสดงข้อมูล JSON จาก then ข้างบน
+                                window.open(data.url, "_blank", "noopener,noreferrer");
+                            })
+                            // Swal.fire({
+                            //     text: "คุณแน่ใจหรือไม่...ที่จะลบรายการนี้?",
+                            //     icon: 'warning',
+                            //     showCancelButton: true,
+                            //     confirmButtonText: 'ใช่! ลบเลย',
+                            //     cancelButtonText: 'ยกเลิก'
+                            // }).then((result) => {
+                            //     if (result.isConfirmed) {
+                            //         $.ajax({
+                            //             type: "DELETE",
+                            //             url: "../../service/members/delete.php",
+                            //             data: {
+                            //                 id: id
+                            //             }
+                            //         }).done(function() {
+                            //             Swal.fire({
+                            //                 text: 'รายการของคุณถูกลบเรียบร้อย',
+                            //                 icon: 'success',
+                            //                 confirmButtonText: 'ตกลง',
+                            //             }).then((result) => {
+                            //                 location.reload()
+                            //             })
+                            //         })
+                            //     }
+                            // })
+                        })
+                    },
                     responsive: {
                         details: {
                             display: $.fn.dataTable.Responsive.display.modal({
