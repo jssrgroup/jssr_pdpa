@@ -161,9 +161,6 @@ require_once('../authen.php');
 
     <script>
         const depId = <?= $_SESSION['LOGIN']['user']['role']['depId'] ?>;
-        const userId = <?= $_SESSION['LOGIN']['user']['role']['userId'] ?>;
-        console.log("depId: " + depId);
-        console.log("userId: " + userId);
         $(function() {
             bsCustomFileInput.init();
             // console.log(bsCustomFileInput);

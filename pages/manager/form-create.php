@@ -51,34 +51,20 @@ require_once('../authen.php');
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label>ค้นหารายชื่อ</label>
-                                                    <select class="custom-select selectSearch" id="admin" name="user_id" data-placeholder="ค้นหาด้วยชื่อ หรือ เบอร์โทร">
-                                                        <option selected="selected"></option>
-                                                        <option value="99">AppzStory</option>
-                                                        <option>Jame</option>
-                                                        <option>Ethan Winters</option>
-                                                        <option>Rosemary</option>
-                                                        <option>Chris Redfield</option>
-                                                    </select>
+                                                    <select class="custom-select select2" id="admin" name="user_id" data-placeholder="ค้นหาด้วยชื่อ หรือ ชื่อผู้ใช้งาน"></select>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label>ค้นหาแผนก</label>
-                                                    <select class="custom-select selectSearch" id="department" name="dep_id" data-placeholder="ค้นหาด้วยชื่อ หรือ เบอร์โทร">
-                                                        <option selected="selected"></option>
-                                                        <option>AppzStory</option>
-                                                        <option value="6">Jame</option>
-                                                        <option>Ethan Winters</option>
-                                                        <option>Rosemary</option>
-                                                        <option>Chris Redfield</option>
-                                                    </select>
+                                                    <select class="custom-select select2" id="department" name="dep_id" data-placeholder="ค้นหาด้วยชื่อ หรือ รหัส"></select>
                                                 </div>
                                             </div>
                                             <div class="col-md-3 offset-3">
                                                 <div class="form-group">
                                                     <label for="role_id">สิทธิ์การใช้งาน</label>
-                                                    <select class="form-control" name="role_id" id="role_id" required>
-                                                        <option value disabled selected>กำหนดสิทธิ์</option>
+                                                    <select class="custom-select select2" name="role_id" id="role_id" data-placeholder="ค้นหาด้วยชื่อ หรือ รหัส">
+                                                        <option></option>
                                                         <option value="1">Super Admin</option>
                                                         <option value="2">Admin</option>
                                                         <option value="3">User</option>
@@ -90,7 +76,7 @@ require_once('../authen.php');
                                             <div class="col-md-12">
                                                 <label for="status">สถานะ</label>
                                                 <div class="form-group">
-                                                    <input type="checkbox" name="status" value="1" checked data-bootstrap-switch>
+                                                    <input type="checkbox" class="switch" name="status" value="1" checked>
                                                 </div>
 
                                             </div>
@@ -98,6 +84,8 @@ require_once('../authen.php');
                                     </div>
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary btn-block mx-auto w-50" name="submit">บันทึกข้อมูล</button>
+                                        <!-- <button type="button" id="check">Check</button>
+                                        <button type="button" id="uncheck">Uncheck</button> -->
                                     </div>
                                 </form>
                             </div>
@@ -114,17 +102,26 @@ require_once('../authen.php');
     <script src="../../plugins/sweetalert2/sweetalert2.min.js"></script>
     <script src="../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
     <script src="../../plugins/select2/js/select2.full.min.js"></script>
+    <script src="../../plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="../../plugins/jquery-validation/additional-methods.min.js"></script>
     <script src="../../assets/js/adminlte.min.js"></script>
 
     <script>
         $(function() {
-            $('.selectSearch').select2({
+            $('.select2').select2({
                 width: '100%'
             })
-            $("input[data-bootstrap-switch]").each(function() {
-                $(this).bootstrapSwitch('state', $(this).prop('checked'));
-            })
-            $('#formData').on('submit', function(e) {
+            $(".switch").bootstrapSwitch();
+            // $('#check').on('click', function(e) {
+            //     $('.switch').bootstrapSwitch('state', true);
+            // })
+            // $('#uncheck').on('click', function(e) {
+            //     $('.switch').bootstrapSwitch('state', false);
+            // })
+            // $("input[data-bootstrap-switch]").each(function() {
+            //     $(this).bootstrapSwitch('state', $(this).prop('checked'));
+            // })
+            $('#formDataxxx').on('submit', function(e) {
                 e.preventDefault()
                 console.log($(this).serialize())
                 $.ajax({
@@ -141,6 +138,61 @@ require_once('../authen.php');
                     });
                 })
             });
+
+            $('#formData').submit(function(e) {
+                e.preventDefault();
+            }).validate({
+                rules: {
+                    user_id: {
+                        required: true,
+                    },
+                    dep_id: {
+                        required: true,
+                    },
+                    role_id: {
+                        required: true,
+                    },
+                },
+                messages: {
+                    user_id: {
+                        required: "เลือก ผู้ใช้งาน",
+                    },
+                    dep_id: {
+                        required: "เลือก แผนก",
+                    },
+                    role_id: {
+                        required: "เลือก บทบาท",
+                    },
+                },
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                },
+                submitHandler: function(form) {
+                    // console.log($('#formData').serialize())
+                    $.ajax({
+                        type: 'POST',
+                        url: '<?= API_URL ?>v2/userManagement/add',
+                        data: $('#formData').serialize()
+                    }).done(function(resp) {
+                        Swal.fire({
+                            text: 'เพิ่มข้อมูลเรียบร้อย',
+                            icon: 'success',
+                            confirmButtonText: 'ตกลง',
+                        }).then((result) => {
+                            location.assign('<?= BASE_URL ?>pages/manager');
+                        });
+                    })
+                }
+            });
+
             selectDataSearch('admin', 0)
             selectDataSearch('department', 0)
         });
@@ -153,6 +205,7 @@ require_once('../authen.php');
                 success: function(result) {
                     // console.log(result);
                     $("#" + el).html("");
+                    $("#" + el).append(`<option></option>`);
                     $.each(result.data, function(index, ref) {
                         var select = "";
                         if (ref.id == id) {

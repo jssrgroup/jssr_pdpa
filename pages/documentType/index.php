@@ -14,7 +14,7 @@ require_once('../authen.php');
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>จัดการผู้ดูแลระบบ | AppzStory</title>
+    <title>จัดการประเภทเอกสาร | <?= APP_NAME ?></title>
     <link rel="shortcut icon" type="image/x-icon" href="../../assets/images/favicon.ico">
     <!-- stylesheet -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit">
@@ -39,10 +39,10 @@ require_once('../authen.php');
                             <div class="card shadow">
                                 <div class="card-header border-0 pt-4">
                                     <h4>
-                                        <i class="fas fa-user-cog"></i>
-                                        ผู้ดูแลระบบ
+                                        <i class="fas fa-folder-open"></i>
+                                        ประเภทเอกสาร
                                     </h4>
-                                    <a href="form-create.php" class="btn btn-primary mt-3">
+                                    <a href="<?= BASE_URL ?>pages/documentType/form-create.php" class="btn btn-primary mt-3">
                                         <i class="fas fa-plus"></i>
                                         เพิ่มข้อมูล
                                     </a>
@@ -73,22 +73,29 @@ require_once('../authen.php');
     <script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 
     <script>
+        const depId = <?= $_SESSION['LOGIN']['user']['role']['depId'] ?>;
+        const userId = <?= $_SESSION['LOGIN']['user']['role']['userId'] ?>;
+        console.log("depId: " + depId);
+        console.log("userId: " + userId);
         $(function() {
             $.ajax({
                 type: "GET",
-                url: "<?= API_URL ?>v2/userManagement/all"
+                url: "<?= API_URL ?>" + `v2/documentType/${depId}/all`
             }).done(function(data) {
                 // console.log(data.data);
                 let tableData = []
                 data.data.forEach(function(item, index) {
                     tableData.push([
                         ++index,
-                        item.user,
-                        item.dep,
-                        item.role,
-                        `<span class="badge badge-info">${item.status}</span>`,
+                        // item.id,
+                        // item.depId,
+                        `<span class="badge badge-info">${item.code}</span>`,
+                        item.desc,
+                        item.parentDesc,
+                        item.pattern,
+                        item.expire,
                         `<div class="btn-group" role="group">
-                            <a href="<?= BASE_URL?>pages/manager/form-edit.php?id=${item.id}" type="button" class="btn btn-warning text-white">
+                            <a href="<?= BASE_URL ?>pages/documentType/form-edit.php?id=${item.id}" type="button" class="btn btn-warning text-white">
                                 <i class="far fa-edit"></i> แก้ไข
                             </a>
                             <button type="button" class="btn btn-danger" id="delete" data-id="${item.id}" data-index="${index}">
@@ -115,20 +122,32 @@ require_once('../authen.php');
                             title: "ลำดับ",
                             className: "align-middle"
                         },
+                        // {
+                        //     title: "#",
+                        //     className: "align-middle"
+                        // },
+                        // {
+                        //     title: "แผนก",
+                        //     className: "align-middle"
+                        // },
                         {
-                            title: "ชื่อผู้ใช้งาน",
+                            title: "รหัส",
                             className: "align-middle"
                         },
                         {
-                            title: "แผนก",
+                            title: "ชื่อประเภทเอกสาร",
                             className: "align-middle"
                         },
                         {
-                            title: "สิทธิ์เข้าใช้งาน",
+                            title: "อยู่ภายใต้",
                             className: "align-middle"
                         },
                         {
-                            title: "สถานะ",
+                            title: "รูปแบบ",
+                            className: "align-middle"
+                        },
+                        {
+                            title: "หมดอายุ",
                             className: "align-middle"
                         },
                         {
@@ -150,7 +169,7 @@ require_once('../authen.php');
                                 if (result.isConfirmed) {
                                     $.ajax({
                                         type: "POST",
-                                        url: `<?= API_URL?>v2/userManagement/${id}/delete`,
+                                        url: `<?= API_URL ?>v2/documentType/${id}/delete`,
                                     }).done(function() {
                                         Swal.fire({
                                             text: 'รายการของคุณถูกลบเรียบร้อย',

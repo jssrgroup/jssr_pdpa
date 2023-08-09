@@ -38,7 +38,7 @@ require_once('../authen.php');
                                 <div class="card-header border-0 pt-4">
                                     <h4>
                                         <i class="fas fa-building"></i>
-                                        เพิ่มข้อมูลผู้ดูแล
+                                        เพิ่มข้อมูลแผนก
                                     </h4>
                                     <a href="./" class="btn btn-info my-3 ">
                                         <i class="fas fa-list"></i>
@@ -129,7 +129,9 @@ require_once('../authen.php');
                     })
                 }
             });
-            $('#formData').validate({
+            $('#formData').submit(function(e) {
+                e.preventDefault();
+            }).validate({
                 rules: {
                     desc: {
                         required: true,
@@ -152,6 +154,22 @@ require_once('../authen.php');
                 },
                 unhighlight: function(element, errorClass, validClass) {
                     $(element).removeClass('is-invalid');
+                },
+                submitHandler: function(form) {
+                    // console.log($('#formData').serialize())
+                    $.ajax({
+                        type: 'POST',
+                        url: '<?= API_URL ?>v2/department/add',
+                        data: $('#formData').serialize()
+                    }).done(function(resp) {
+                        Swal.fire({
+                            text: 'เพิ่มข้อมูลเรียบร้อย',
+                            icon: 'success',
+                            confirmButtonText: 'ตกลง',
+                        }).then((result) => {
+                            location.assign('<?= BASE_URL ?>pages/department');
+                        });
+                    })
                 }
             });
         });

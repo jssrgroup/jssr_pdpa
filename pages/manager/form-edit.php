@@ -90,7 +90,7 @@ require_once('../authen.php');
                                             <div class="col-md-12">
                                                 <label for="status">สถานะ</label>
                                                 <div class="form-group">
-                                                    <input type="checkbox" name="status" value="1" checked data-bootstrap-switch>
+                                                    <input type="checkbox" class="switch" name="status" value="1" checked>
                                                 </div>
 
                                             </div>
@@ -114,6 +114,8 @@ require_once('../authen.php');
     <script src="../../plugins/sweetalert2/sweetalert2.min.js"></script>
     <script src="../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
     <script src="../../plugins/select2/js/select2.full.min.js"></script>
+    <script src="../../plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="../../plugins/jquery-validation/additional-methods.min.js"></script>
     <script src="../../assets/js/adminlte.min.js"></script>
 
     <script>
@@ -127,51 +129,88 @@ require_once('../authen.php');
                     type: 'GET',
                     url: "<?= API_URL ?>" + `v2/userManagement/${id}`,
                 }).done(function(resp) {
-                    console.log(resp.data);
-                    $("#admin").val(resp.data.userId).trigger("change");
-                    $("#department").val(resp.data.depId).trigger("change");
+                    // console.log(resp.data);
+                    // $("#admin").val(resp.data.userId).trigger("change");
+                    // $("#department").val(resp.data.depId).trigger("change");
+                    selectDataSearch('admin', resp.data.userId)
+                    selectDataSearch('department', resp.data.depId)
                     $("#roleId").val(resp.data.roleId).trigger("change");
-
+                    $('.switch').bootstrapSwitch('state', resp.data.statusId);
                 })
             }
-            $('.selectSearch').select2({
+            $('.select2').select2({
                 width: '100%'
             })
-            $("input[data-bootstrap-switch]").each(function() {
-                $(this).bootstrapSwitch('state', $(this).prop('checked'));
-            })
+            $(".switch").bootstrapSwitch()
+
+
+
             $('#formData').submit(function(e) {
                 e.preventDefault();
-                // $.ajax({
-                //     type: 'PUT',
-                //     url: '../../service/manager/update.php',
-                //     data: $('#formData').serialize()
-                // }).done(function(resp) {
-                //     Swal.fire({
-                //         text: 'อัพเดทข้อมูลเรียบร้อย',
-                //         icon: 'success',
-                //         confirmButtonText: 'ตกลง',
-                //     }).then((result) => {
-                //         location.assign('./');
-                //     });
-                // })
+            }).validate({
+                rules: {
+                    user_id: {
+                        required: true,
+                    },
+                    dep_id: {
+                        required: true,
+                    },
+                    role_id: {
+                        required: true,
+                    },
+                },
+                messages: {
+                    user_id: {
+                        required: "เลือก ผู้ใช้งาน",
+                    },
+                    dep_id: {
+                        required: "เลือก แผนก",
+                    },
+                    role_id: {
+                        required: "เลือก บทบาท",
+                    },
+                },
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                },
+                submitHandler: function(form) {
+                    // console.log($('#formData').serialize())
+                    $.ajax({
+                        type: 'POST',
+                        url: '<?= API_URL ?>' + `v2/userManagement/${id}/update`,
+                        data: $('#formData').serialize()
+                    }).done(function(resp) {
+                        Swal.fire({
+                            text: 'อัพเดทข้อมูลเรียบร้อย',
+                            icon: 'success',
+                            confirmButtonText: 'ตกลง',
+                        }).then((result) => {
+                            location.assign('<?= BASE_URL ?>pages/manager');
+                        });
+                    })
+                }
             });
-
-            selectDataSearch('admin', 0)
-            selectDataSearch('department', 0)
 
             loadData(id)
 
         });
 
         function selectDataSearch(el, id) {
-            console.log(el);
             $.ajax({
                 url: "<?= API_URL ?>" + `v2/${el}/all`,
                 method: "GET",
                 success: function(result) {
                     // console.log(result);
                     $("#" + el).html("");
+                    $("#" + el).append(`<option></option>`);
                     $.each(result.data, function(index, ref) {
                         var select = "";
                         if (ref.id == id) {
@@ -182,7 +221,7 @@ require_once('../authen.php');
                             ref.id +
                             '"' +
                             select +
-                            `>${ref.name} [${ref.username}]</option>`
+                            `>${ref.name} [${ref.username}:${ref.id}]</option>`
                         );
                     });
                 },

@@ -38,7 +38,7 @@ require_once('../authen.php');
                                 <div class="card-header border-0 pt-4">
                                     <h4>
                                         <i class="fas fa-building"></i>
-                                        แก้ไขข้อมูลผู้ดูแล
+                                        แก้ไขข้อมูลแผนก
                                     </h4>
                                     <a href="./" class="btn btn-info my-3 ">
                                         <i class="fas fa-list"></i>
@@ -107,44 +107,10 @@ require_once('../authen.php');
             $("input[data-bootstrap-switch]").each(function() {
                 $(this).bootstrapSwitch('state', $(this).prop('checked'));
             })
+
             $('#formData').submit(function(e) {
                 e.preventDefault();
-                $.ajax({
-                    type: 'POST',
-                    url: '<?= API_URL ?>' + `v2/department/${id}/update`,
-                    data: $('#formData').serialize()
-                }).done(function(resp) {
-                    Swal.fire({
-                        text: 'อัพเดทข้อมูลเรียบร้อย',
-                        icon: 'success',
-                        confirmButtonText: 'ตกลง',
-                    }).then((result) => {
-                        location.assign('<?= BASE_URL ?>pages/department');
-                    });
-                })
-            });
-
-            $.validator.setDefaults({
-                submitHandler: function() {
-                    // alert("Form successful submitted!");
-                    e.preventDefault()
-                    console.log($(this).serialize())
-                    // $.ajax({
-                    //     type: 'POST',
-                    //     url: '<?= API_URL ?>' + `v2/department/${id}/update`,
-                    //     data: $('#formData').serialize()
-                    // }).done(function(resp) {
-                    //     Swal.fire({
-                    //         text: 'อัพเดทข้อมูลเรียบร้อย',
-                    //         icon: 'success',
-                    //         confirmButtonText: 'ตกลง',
-                    //     }).then((result) => {
-                    //         location.assign('<?= BASE_URL ?>pages/department');
-                    //     });
-                    // })
-                }
-            });
-            $('#formDataxxx').validate({
+            }).validate({
                 rules: {
                     desc: {
                         required: true,
@@ -167,6 +133,21 @@ require_once('../authen.php');
                 },
                 unhighlight: function(element, errorClass, validClass) {
                     $(element).removeClass('is-invalid');
+                },
+                submitHandler: function(form) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '<?= API_URL ?>' + `v2/department/${id}/update`,
+                        data: $('#formData').serialize()
+                    }).done(function(resp) {
+                        Swal.fire({
+                            text: 'อัพเดทข้อมูลเรียบร้อย',
+                            icon: 'success',
+                            confirmButtonText: 'ตกลง',
+                        }).then((result) => {
+                            location.assign('<?= BASE_URL ?>pages/department');
+                        });
+                    })
                 }
             });
             // var currentPath = window.location.pathname;
