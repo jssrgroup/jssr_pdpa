@@ -200,6 +200,7 @@ require_once('../authen.php');
                 fdata.append("depId", depId);
                 fdata.append("docType", data.doc_type);
                 fdata.append("userId", userId);
+                fdata.append("docId", data.doc_type_det);
                 console.log(fdata);
                 // Get the file input element and the selected file
                 // var fileInput = $("#fileInput")[0];
