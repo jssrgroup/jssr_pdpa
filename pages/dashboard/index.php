@@ -15,7 +15,7 @@ require_once('../authen.php');
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>หน้าหลัก | AppzStory</title>
+    <title>หน้าหลัก | <?= APP_NAME?></title>
     <link rel="shortcut icon" type="image/x-icon" href="../../assets/images/favicon.ico">
     <!-- stylesheet -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit">
@@ -35,34 +35,35 @@ require_once('../authen.php');
                         <div class="col-lg-3 col-6">
                             <div class="small-box bg-info shadow">
                                 <div class="inner text-center">
-                                    <h1 class="py-3">&nbsp;ผู้ดูแลระบบ&nbsp;</h1>
+                                    <h1 class="py-3">&nbsp;เอกสาร&nbsp;</h1>
                                 </div>
-                                <a href="../manager/" class="small-box-footer py-3"> คลิกจัดการระบบ <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="<?= BASE_URL?>pages/documents/" class="small-box-footer py-3"> คลิกจัดการระบบ <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                         <div class="col-lg-3 col-6">
                             <div class="small-box bg-primary shadow">
                                 <div class="inner text-center">
-                                    <h1 class="py-3">รายชื่อลูกค้า</h1>
+                                    <h1 class="py-3">ประเภทเอกสาร</h1>
                                 </div>
-                                <a href="../members/" class="small-box-footer py-3"> คลิกจัดการระบบ <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="<?= BASE_URL?>pages/documentType/" class="small-box-footer py-3"> คลิกจัดการระบบ <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
 
                         <div class="col-lg-3 col-6">
                             <div class="small-box bg-success shadow">
                                 <div class="inner text-center">
-                                    <h1 class="py-3">รายการสินค้า</h1>
+                                    <h1 class="py-3">ผู้ดูแลระบบ</h1>
                                 </div>
-                                <a href="../products/" class="small-box-footer py-3"> คลิกจัดการระบบ <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="<?= BASE_URL?>pages/manager/" class="small-box-footer py-3"> คลิกจัดการระบบ <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
+
                         <div class="col-lg-3 col-6">
-                            <div class="small-box bg-danger shadow">
+                            <div class="small-box bg-success shadow">
                                 <div class="inner text-center">
-                                    <h1 class="py-3">รายการสั่งซื้อ</h1>
+                                    <h1 class="py-3">ลูกค้า</h1>
                                 </div>
-                                <a href="../orders/" class="small-box-footer py-3"> คลิกจัดการระบบ <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="<?= BASE_URL?>page/members/" class="small-box-footer py-3"> คลิกจัดการระบบ <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -70,8 +71,8 @@ require_once('../authen.php');
                         <div class="col-lg-3">
                             <div class="small-box py-3 bg-white shadow">
                                 <div class="inner">
-                                    <h3>3,500 บาท</h3>
-                                    <p class="text-danger">ยอดขายประจำวัน</p>
+                                    <h3>21 เอกสาร</h3>
+                                    <p class="text-danger">เอกสารทั้งหมด</p>
                                 </div>
                                 <div class="icon">
                                     <i class="fas fa-chart-bar"></i>
@@ -81,8 +82,8 @@ require_once('../authen.php');
                         <div class="col-lg-3">
                             <div class="small-box py-3 bg-white shadow">
                                 <div class="inner">
-                                    <h3>25,000 บาท</h3>
-                                    <p class="text-danger">ยอดขาย 7 วันที่ผ่านมา</p>
+                                    <h3>8 เอกสาร</h3>
+                                    <p class="text-danger">เอกสารของฉัน</p>
                                 </div>
                                 <div class="icon">
                                     <i class="fas fa-chart-area"></i>
@@ -92,8 +93,8 @@ require_once('../authen.php');
                         <div class="col-lg-3">
                             <div class="small-box py-3 bg-white shadow">
                                 <div class="inner">
-                                    <h3>5 รายการ</h3>
-                                    <p class="text-danger">ยอดคำสั่งซื้อประจำวัน</p>
+                                    <h3>3 เอกสาร</h3>
+                                    <p class="text-danger">เอกสารหมดอายุใน 7 วัน</p>
                                 </div>
                                 <div class="icon">
                                     <i class="fas fa-cart-arrow-down"></i>
@@ -103,8 +104,8 @@ require_once('../authen.php');
                         <div class="col-lg-3">
                             <div class="small-box py-3 bg-white shadow">
                                 <div class="inner">
-                                    <h3>10 คน</h3>
-                                    <p class="text-danger">ลูกค้าหน้าใหม่ในเดือนนี้</p>
+                                    <h3>1 เอกสาร</h3>
+                                    <p class="text-danger">เอกสารหมดอายุแล้ว</p>
                                 </div>
                                 <div class="icon">
                                     <i class="fas fa-users"></i>
@@ -112,7 +113,7 @@ require_once('../authen.php');
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row d-none">
                         <div class="col-lg-12">
                             <div class="card shadow">
                                 <div class="card-body">
