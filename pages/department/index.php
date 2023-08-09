@@ -139,7 +139,7 @@ require_once('../authen.php');
                             }).then((result) => {
                                 if (result.isConfirmed) {
                                     $.ajax({
-                                        type: "DELETE",
+                                        type: "POST",
                                         url: `<?= API_URL?>v2/department/${id}/delete`,
                                     }).done(function() {
                                         Swal.fire({

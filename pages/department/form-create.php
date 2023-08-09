@@ -48,11 +48,13 @@ require_once('../authen.php');
                                 <form id="formData">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-md-6 px-1 px-md-5">
+                                            <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="code">รหัส</label>
                                                     <input type="text" class="form-control" name="code" id="code" placeholder="รหัส">
                                                 </div>
+                                            </div>
+                                            <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="desc">ชื่อ</label>
                                                     <input type="text" class="form-control" name="desc" id="desc" placeholder="ชื่อ" required>
@@ -129,21 +131,15 @@ require_once('../authen.php');
             });
             $('#formData').validate({
                 rules: {
-                    code: {
-                        required: true,
-                    },
                     desc: {
                         required: true,
                         minlength: 5
                     },
                 },
                 messages: {
-                    code: {
-                        required: "Please enter a email address",
-                    },
                     desc: {
-                        required: "Please provide a password",
-                        minlength: "Your password must be at least 5 characters long"
+                        required: "ชื่อ ห้ามเว้นว่าง",
+                        minlength: "ไม่น้อยกว่า 5 ตัวอักษร"
                     },
                 },
                 errorElement: 'span',

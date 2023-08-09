@@ -48,11 +48,13 @@ require_once('../authen.php');
                                 <form id="formData">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-md-6 px-1 px-md-5">
+                                            <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="code">รหัส</label>
                                                     <input type="text" class="form-control" name="code" id="code" placeholder="รหัส">
                                                 </div>
+                                            </div>
+                                            <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="desc">ชื่อ</label>
                                                     <input type="text" class="form-control" name="desc" id="desc" placeholder="ชื่อ" required>
@@ -78,6 +80,8 @@ require_once('../authen.php');
     <script src="../../plugins/sweetalert2/sweetalert2.min.js"></script>
     <script src="../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
     <script src="../../plugins/select2/js/select2.full.min.js"></script>
+    <script src="../../plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="../../plugins/jquery-validation/additional-methods.min.js"></script>
     <script src="../../assets/js/adminlte.min.js"></script>
 
     <script>
@@ -106,8 +110,8 @@ require_once('../authen.php');
             $('#formData').submit(function(e) {
                 e.preventDefault();
                 $.ajax({
-                    type: 'PUT',
-                    url: '<?= API_URL?>'+`v2/department/${id}/update`,
+                    type: 'POST',
+                    url: '<?= API_URL ?>' + `v2/department/${id}/update`,
                     data: $('#formData').serialize()
                 }).done(function(resp) {
                     Swal.fire({
@@ -118,6 +122,52 @@ require_once('../authen.php');
                         location.assign('<?= BASE_URL ?>pages/department');
                     });
                 })
+            });
+
+            $.validator.setDefaults({
+                submitHandler: function() {
+                    // alert("Form successful submitted!");
+                    e.preventDefault()
+                    console.log($(this).serialize())
+                    // $.ajax({
+                    //     type: 'POST',
+                    //     url: '<?= API_URL ?>' + `v2/department/${id}/update`,
+                    //     data: $('#formData').serialize()
+                    // }).done(function(resp) {
+                    //     Swal.fire({
+                    //         text: 'อัพเดทข้อมูลเรียบร้อย',
+                    //         icon: 'success',
+                    //         confirmButtonText: 'ตกลง',
+                    //     }).then((result) => {
+                    //         location.assign('<?= BASE_URL ?>pages/department');
+                    //     });
+                    // })
+                }
+            });
+            $('#formDataxxx').validate({
+                rules: {
+                    desc: {
+                        required: true,
+                        minlength: 5
+                    },
+                },
+                messages: {
+                    desc: {
+                        required: "ชื่อ ห้ามเว้นว่าง",
+                        minlength: "ไม่น้อยกว่า 5 ตัวอักษร"
+                    },
+                },
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
             });
             // var currentPath = window.location.pathname;
             // console.log(currentPath);
