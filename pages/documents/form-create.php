@@ -171,69 +171,69 @@ require_once('../authen.php');
                 getDataDoc(depId, 0, selectedValue)
             });
 
-            $('#formDataxxx').on('submit', function(e) {
-                e.preventDefault();
-                // $.ajax({
-                //     type: 'POST',
-                //     url: '../../service/products/create.php',
-                //     data: $('#formData').serialize()
-                // }).done(function(resp) {
-                //     Swal.fire({
-                //         text: 'เพิ่มข้อมูลเรียบร้อย',
-                //         icon: 'success',
-                //         confirmButtonText: 'ตกลง',
-                //     }).then((result) => {
-                //         location.assign('./');
-                //     });
-                // })
-                // var data = $('#formData').serialize();
-                // var data = $('#formData').serializeArray();
-                var data = $('#formData').serializeObject();
-                // var form = new FormData(this);
-                // console.log(data);
+            // $('#formDataxxx').on('submit', function(e) {
+            //     e.preventDefault();
+            //     // $.ajax({
+            //     //     type: 'POST',
+            //     //     url: '../../service/products/create.php',
+            //     //     data: $('#formData').serialize()
+            //     // }).done(function(resp) {
+            //     //     Swal.fire({
+            //     //         text: 'เพิ่มข้อมูลเรียบร้อย',
+            //     //         icon: 'success',
+            //     //         confirmButtonText: 'ตกลง',
+            //     //     }).then((result) => {
+            //     //         location.assign('./');
+            //     //     });
+            //     // })
+            //     // var data = $('#formData').serialize();
+            //     // var data = $('#formData').serializeArray();
+            //     var data = $('#formData').serializeObject();
+            //     // var form = new FormData(this);
+            //     // console.log(data);
 
-                const fdata = new FormData();
-                fdata.append("fileName", file.files[0]);
-                fdata.append("imageName", data.doc_name);
-                fdata.append("expireDate", formatDate(data.expire));
-                fdata.append("refId", data.refId);
-                fdata.append("depId", depId);
-                fdata.append("docType", data.doc_type);
-                fdata.append("userId", userId);
-                fdata.append("docId", data.doc_type_det);
-                console.log(fdata);
-                // Get the file input element and the selected file
-                // var fileInput = $("#fileInput")[0];
-                // var file = fileInput.files[0];
+            //     const fdata = new FormData();
+            //     fdata.append("fileName", file.files[0]);
+            //     fdata.append("imageName", data.doc_name);
+            //     fdata.append("expireDate", formatDate(data.expire));
+            //     fdata.append("refId", data.refId);
+            //     fdata.append("depId", depId);
+            //     fdata.append("docType", data.doc_type);
+            //     fdata.append("userId", userId);
+            //     fdata.append("docId", data.doc_type_det);
+            //     console.log(fdata);
+            //     // Get the file input element and the selected file
+            //     // var fileInput = $("#fileInput")[0];
+            //     // var file = fileInput.files[0];
 
-                // // Create a FormData object to send the file data
-                // var formData = new FormData();
-                // formData.append("file", file);
+            //     // // Create a FormData object to send the file data
+            //     // var formData = new FormData();
+            //     // formData.append("file", file);
 
-                // Perform the AJAX POST request
-                $.ajax({
-                    url: '<?= API_URL ?>v2/document', // Replace "upload.php" with the URL to your server-side file handling script
-                    type: "POST",
-                    data: fdata,
-                    processData: false, // Prevent jQuery from processing the data
-                    contentType: false, // Prevent jQuery from setting the Content-Type header
-                    success: function(response) {
-                        // Handle the server's response here
-                        // console.log("File uploaded successfully!", response);
-                        Swal.fire({
-                            text: 'เพิ่มข้อมูลเรียบร้อย',
-                            icon: 'success',
-                            confirmButtonText: 'ตกลง',
-                        }).then((result) => {
-                            location.assign('<?= BASE_URL ?>pages/documents/');
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle the error
-                        console.error("Error occurred:", error);
-                    }
-                });
-            });
+            //     // Perform the AJAX POST request
+            //     $.ajax({
+            //         url: '<?= API_URL ?>v2/document', // Replace "upload.php" with the URL to your server-side file handling script
+            //         type: "POST",
+            //         data: fdata,
+            //         processData: false, // Prevent jQuery from processing the data
+            //         contentType: false, // Prevent jQuery from setting the Content-Type header
+            //         success: function(response) {
+            //             // Handle the server's response here
+            //             // console.log("File uploaded successfully!", response);
+            //             Swal.fire({
+            //                 text: 'เพิ่มข้อมูลเรียบร้อย',
+            //                 icon: 'success',
+            //                 confirmButtonText: 'ตกลง',
+            //             }).then((result) => {
+            //                 location.assign('<?= BASE_URL ?>pages/documents/');
+            //             });
+            //         },
+            //         error: function(xhr, status, error) {
+            //             // Handle the error
+            //             console.error("Error occurred:", error);
+            //         }
+            //     });
+            // });
 
             $('#formData').submit(function(e) {
                 e.preventDefault();
@@ -283,6 +283,7 @@ require_once('../authen.php');
                     fdata.append("depId", depId);
                     fdata.append("docType", data.doc_type);
                     fdata.append("userId", userId);
+                    fdata.append("docId", data.doc_type_det);
                     console.log(fdata);
   
                     $.ajax({
