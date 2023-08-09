@@ -84,14 +84,14 @@ require_once('../authen.php');
                         item.ref_dep,
                         item.image_name,
                         `<a href="../members/profile.php?id=${item.mem_id}">
-                        ${item.file_name}
-                    </a>`,
+                            ${item.file_name}
+                        </a>`,
                         item.ref,
                         `<span class="text-muted small">${item.expire_date_at}</span>`,
                         `<span class="text-muted"> ${item.ref_user} </span>  `,
-                        `<a href="info.php?o_id=${item.id}" class="btn btn-info">
-                        <i class="fas fa-search"></i> ดูข้อมูล
-                    </a>`
+                        // `<a href="info.php?o_id=${item.id}" class="btn btn-info">
+                        //     <i class="fas fa-search"></i> ดูข้อมูล
+                        // </a>`
                     ])
                 })
                 initDataTables(tableData)
@@ -136,10 +136,10 @@ require_once('../authen.php');
                             title: "ผู้บันทึก",
                             className: "align-middle"
                         },
-                        {
-                            title: "จัดการ",
-                            className: "align-middle"
-                        }
+                        // {
+                        //     title: "จัดการ",
+                        //     className: "align-middle"
+                        // }
                     ],
                     responsive: {
                         details: {

@@ -39,10 +39,10 @@
                                     <i class="fas fa-users"></i> 
                                     รายชื่อลูกค้า
                                 </h4>
-                                <a href="form-create.php" class="btn btn-primary mt-3">
+                                <!-- <a href="form-create.php" class="btn btn-primary mt-3">
                                     <i class="fas fa-plus"></i>
                                     เพิ่มข้อมูล
-                                </a>
+                                </a> -->
                             </div>
                             <div class="card-body">
                                 <table  id="logs" 
@@ -85,17 +85,17 @@
                     item.name,
                     item.email,
                     item.mobile,
-                    `<a href="profile.php?id=${item.id}" class="btn btn-info">
-                        <i class="fas fa-search"></i> รายละเอียด
-                    </a>`,
-                    `<div class="btn-group" role="group">
-                        <a href="form-edit.php?id=${item.id}" type="button" class="btn btn-warning text-white">
-                            <i class="far fa-edit"></i> แก้ไข
-                        </a>
-                        <button type="button" class="btn btn-danger" id="delete" data-id="${item.id}">
-                            <i class="far fa-trash-alt"></i> ลบ
-                        </button>
-                    </div>`
+                    // `<a href="profile.php?id=${item.id}" class="btn btn-info">
+                    //     <i class="fas fa-search"></i> รายละเอียด
+                    // </a>`,
+                    // `<div class="btn-group" role="group">
+                    //     <a href="form-edit.php?id=${item.id}" type="button" class="btn btn-warning text-white">
+                    //         <i class="far fa-edit"></i> แก้ไข
+                    //     </a>
+                    //     <button type="button" class="btn btn-danger" id="delete" data-id="${item.id}">
+                    //         <i class="far fa-trash-alt"></i> ลบ
+                    //     </button>
+                    // </div>`
                 ])
             })
             initDataTables(tableData)
@@ -118,8 +118,8 @@
                     { title: "ชื่อ", className: "align-middle"},
                     { title: "อีเมล", className: "align-middle"},
                     { title: "เบอร์โทรศัพท์", className: "align-middle"},
-                    { title: "ข้อมูลส่วนตัว", className: "align-middle"},
-                    { title: "จัดการ", className: "align-middle"}
+                    // { title: "ข้อมูลส่วนตัว", className: "align-middle"},
+                    // { title: "จัดการ", className: "align-middle"}
                 ],
                 initComplete: function () {
                     $(document).on('click', '#delete', function(){ 

@@ -61,7 +61,7 @@
                     </a>
                 </li>
                 <li class="nav-header">ตั้งค่า</li>
-                <li class="nav-item hide">
+                <li class="nav-item d-none">
                     <a href="<?= BASE_URL?>pages/useradmin/" class="nav-link <?php echo isActive('useradmin') ?>">
                         <i class="nav-icon fas fa-user-cog text-maroon"></i>
                         <p>useradmin</p>
@@ -91,14 +91,14 @@
                         <p>รายชื่อลูกค้า</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item d-none">
                     <a href="<?= BASE_URL?>pages/products/" class="nav-link <?php echo isActive('products') ?>">
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>รายการสินค้า</p>
                     </a>
                 </li>
                 <li class="nav-header">โปรแกรม</li>
-                <li class="nav-item">
+                <li class="nav-item d-none">
                     <a href="<?= BASE_URL?>pages/orders/" class="nav-link <?php echo isActive('orders') ?>">
                         <i class="nav-icon fas fa-cart-arrow-down"></i>
                         <p>รายการสั่งซื้อ</p>

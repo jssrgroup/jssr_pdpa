@@ -14,7 +14,7 @@ require_once('../authen.php');
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>จัดการผู้ดูแลระบบ | <?= APP_NAME?></title>
+    <title>จัดการผู้ดูแลระบบ | <?= APP_NAME ?></title>
     <link rel="shortcut icon" type="image/x-icon" href="../../assets/images/favicon.ico">
     <!-- stylesheet -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit">
@@ -51,11 +51,11 @@ require_once('../authen.php');
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label>ค้นหารายชื่อ</label>
-                                                    <select class="custom-select selectSearch" name="user_id" id="user" data-placeholder="ค้นหาด้วยชื่อ หรือ เบอร์โทร">
+                                                    <select class="custom-select selectSearch" id="admin" name="user_id" data-placeholder="ค้นหาด้วยชื่อ หรือ เบอร์โทร">
                                                         <option selected="selected"></option>
-                                                        <option value="99" selected>AppzStory</option>
+                                                        <option value="99">AppzStory</option>
                                                         <option>Jame</option>
-                                                        <option value="66" >Ethan Winters</option>
+                                                        <option>Ethan Winters</option>
                                                         <option>Rosemary</option>
                                                         <option>Chris Redfield</option>
                                                     </select>
@@ -64,10 +64,10 @@ require_once('../authen.php');
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label>ค้นหาแผนก</label>
-                                                    <select class="custom-select selectSearch" name="dep_id" data-placeholder="ค้นหาด้วยชื่อ หรือ เบอร์โทร">
+                                                    <select class="custom-select selectSearch" id="department" name="dep_id" data-placeholder="ค้นหาด้วยชื่อ หรือ เบอร์โทร">
                                                         <option selected="selected"></option>
                                                         <option>AppzStory</option>
-                                                        <option value="6" selected>Jame</option>
+                                                        <option value="6">Jame</option>
                                                         <option>Ethan Winters</option>
                                                         <option>Rosemary</option>
                                                         <option>Chris Redfield</option>
@@ -77,7 +77,7 @@ require_once('../authen.php');
                                             <div class="col-md-3 offset-3">
                                                 <div class="form-group">
                                                     <label for="role_id">สิทธิ์การใช้งาน</label>
-                                                    <select class="form-control" name="role_id" id="role_id" required>
+                                                    <select class="form-control" name="role_id" id="roleId" required>
                                                         <option value disabled selected>กำหนดสิทธิ์</option>
                                                         <option value="1">Super Admin</option>
                                                         <option value="2">Admin</option>
@@ -118,6 +118,22 @@ require_once('../authen.php');
 
     <script>
         $(function() {
+            var fullURL = window.location.href;
+            var url = new URL(fullURL);
+            var id = url.searchParams.get("id");
+
+            function loadData(id) {
+                $.ajax({
+                    type: 'GET',
+                    url: "<?= API_URL ?>" + `v2/userManagement/${id}`,
+                }).done(function(resp) {
+                    console.log(resp.data);
+                    $("#admin").val(resp.data.userId).trigger("change");
+                    $("#department").val(resp.data.depId).trigger("change");
+                    $("#roleId").val(resp.data.roleId).trigger("change");
+
+                })
+            }
             $('.selectSearch').select2({
                 width: '100%'
             })
@@ -126,22 +142,52 @@ require_once('../authen.php');
             })
             $('#formData').submit(function(e) {
                 e.preventDefault();
-                $.ajax({
-                    type: 'PUT',
-                    url: '../../service/manager/update.php',
-                    data: $('#formData').serialize()
-                }).done(function(resp) {
-                    Swal.fire({
-                        text: 'อัพเดทข้อมูลเรียบร้อย',
-                        icon: 'success',
-                        confirmButtonText: 'ตกลง',
-                    }).then((result) => {
-                        location.assign('./');
-                    });
-                })
+                // $.ajax({
+                //     type: 'PUT',
+                //     url: '../../service/manager/update.php',
+                //     data: $('#formData').serialize()
+                // }).done(function(resp) {
+                //     Swal.fire({
+                //         text: 'อัพเดทข้อมูลเรียบร้อย',
+                //         icon: 'success',
+                //         confirmButtonText: 'ตกลง',
+                //     }).then((result) => {
+                //         location.assign('./');
+                //     });
+                // })
             });
-            $("#user").val(66).trigger("change");
+
+            selectDataSearch('admin', 0)
+            selectDataSearch('department', 0)
+
+            loadData(id)
+
         });
+
+        function selectDataSearch(el, id) {
+            console.log(el);
+            $.ajax({
+                url: "<?= API_URL ?>" + `v2/${el}/all`,
+                method: "GET",
+                success: function(result) {
+                    // console.log(result);
+                    $("#" + el).html("");
+                    $.each(result.data, function(index, ref) {
+                        var select = "";
+                        if (ref.id == id) {
+                            select = ' selected = "selected"';
+                        }
+                        $("#" + el).append(
+                            '<option value="' +
+                            ref.id +
+                            '"' +
+                            select +
+                            `>${ref.name} [${ref.username}]</option>`
+                        );
+                    });
+                },
+            });
+        }
     </script>
 
 </body>
