@@ -60,7 +60,8 @@
                         <p>หน้าหลัก</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-header">ตั้งค่า</li>
+                <li class="nav-item hide">
                     <a href="<?= BASE_URL?>pages/useradmin/" class="nav-link <?php echo isActive('useradmin') ?>">
                         <i class="nav-icon fas fa-user-cog text-maroon"></i>
                         <p>useradmin</p>
@@ -96,6 +97,7 @@
                         <p>รายการสินค้า</p>
                     </a>
                 </li>
+                <li class="nav-header">โปรแกรม</li>
                 <li class="nav-item">
                     <a href="<?= BASE_URL?>pages/orders/" class="nav-link <?php echo isActive('orders') ?>">
                         <i class="nav-icon fas fa-cart-arrow-down"></i>

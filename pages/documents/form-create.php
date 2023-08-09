@@ -7,7 +7,7 @@
  * @author Yothin Sapsamran (Jame AppzStory Studio)
  */
 require_once('../authen.php');
-echo '<pre>', print_r($_SESSION, 1), '</pre>';
+// echo '<pre>', print_r($_SESSION, 1), '</pre>';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,9 +53,9 @@ echo '<pre>', print_r($_SESSION, 1), '</pre>';
                                 <form id="formData" enctype="multipart/form-data">
                                     <div class="card-body">
                                         <div class="form-row">
-                                            <div class="form-group col-md-3">
+                                            <div class="form-group col-md-2">
                                                 <label for="doc_type">ประเภทเอกสาร</label>
-                                                <select class="custom-select mb-3" id="doc_type" name="doc_type">
+                                                <select class="custom-select mb-3 select2" id="doc_type" name="doc_type">
                                                     <option disabled selected>เลือกประเภทเอกสาร</option>
                                                     <option value="1">เอกสารบริษัท</option>
                                                     <option value="2">เอกสารพนักงาน</option>
@@ -63,21 +63,34 @@ echo '<pre>', print_r($_SESSION, 1), '</pre>';
                                                     <option value="4">เอกสารอื่นๆ</option>
                                                 </select>
                                             </div>
-                                            <div class="form-group col-md-3">
+                                            <div class="form-group col-md-2">
+                                                <label for="doc_type">เอกสาร</label>
+                                                <select class="custom-select mb-3 select2" id="doc_type_det" name="doc_type_det">
+                                                    <option disabled selected>เลือกประเภทเอกสาร</option>
+                                                    <option value="1">เอกสารบริษัท</option>
+                                                    <option value="2">เอกสารพนักงาน</option>
+                                                    <option value="3">เอกสารลูกค้า</option>
+                                                    <option value="4">เอกสารอื่นๆ</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-md-2">
                                                 <label>ค้นหารายชื่อลูกค้า</label>
-                                                <select class="custom-select selectSearch" id="refId" name="refId" data-placeholder="ค้นหาด้วยชื่อ หรือ เบอร์โทร">
+                                                <select class="custom-select select2" id="refId" name="refId" data-placeholder="ค้นหาด้วยชื่อ หรือ เบอร์โทร">
                                                     <option selected="selected"></option>
-                                                    <option>AppzStory</option>
-                                                    <option>Jame</option>
+                                                    <option value="0">None</option>
+                                                    <!-- <option>Jame</option>
                                                     <option>Ethan Winters</option>
                                                     <option>Rosemary</option>
-                                                    <option>Chris Redfield</option>
+                                                    <option>Chris Redfield</option> -->
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="doc_name">ชื่อเอกสาร</label>
                                                 <input type="text" class="form-control" name="doc_name" id="doc_name" placeholder="ชื่อเอกสาร">
                                             </div>
+                                        </div>
+
+                                        <div class="form-row">
                                             <!-- <div class="form-group col-sm-6">
                                                 <!-- <label for="doc_file">เอกสาร</label>
                                                 <div class="doc_file">
@@ -91,11 +104,24 @@ echo '<pre>', print_r($_SESSION, 1), '</pre>';
                                                 </div>
                                             </div> -->
                                             <div class="form-group col-sm-6">
+                                                <label for="file">ไฟล์แนบ</label>
                                                 <div class="custom-file">
-                                                    <input type="file" class="" id="customFile" name="customFile">
-                                                    <!-- <label class="custom-file-label" for="customFile">Choose file</label> -->
+                                                    <input type="file" class="custom-file-input" id="file" name="file">
+                                                    <label class="custom-file-label" for="file">เลือกไฟล์</label>
                                                 </div>
                                             </div>
+                                            <!-- <div class="form-group col-sm-4">
+                                                <label for="exampleInputFile">File input</label>
+                                                <div class="input-group">
+                                                    <div class="custom-file">
+                                                        <input type="file" class="custom-file-input" id="exampleInputFile">
+                                                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                                    </div>
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">Upload999</span>
+                                                    </div>
+                                                </div>
+                                            </div> -->
                                             <div class="form-group offset-sm-3 col-sm-3">
                                                 <label for="expire_date">วันที่หมดอายุ</label>
                                                 <div class="input-group date" id="expire_date" data-target-input="nearest">
@@ -108,6 +134,7 @@ echo '<pre>', print_r($_SESSION, 1), '</pre>';
                                             <div class="card-footer col-sm-12">
                                                 <button type="submit" class="btn btn-primary btn-block mx-auto w-75" name="submit">บันทึกข้อมูล</button>
                                             </div>
+                                        </div>
                                 </form>
                             </div>
                         </div>
@@ -126,16 +153,25 @@ echo '<pre>', print_r($_SESSION, 1), '</pre>';
     <script src="../../plugins/select2/js/select2.full.min.js"></script>
     <script src="../../plugins/summernote/summernote-bs4.min.js"></script>
     <script src="../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="../../plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <script src="../../plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="../../plugins/jquery-validation/additional-methods.min.js"></script>
     <script src="../../assets/js/adminlte.min.js"></script>
     <script src="../../assets/js/util.js"></script>
 
     <script>
+        const depId = <?= $_SESSION['LOGIN']['user']['role']['depId'] ?>;
+        const userId = <?= $_SESSION['LOGIN']['user']['role']['userId'] ?>;
+        console.log("depId: " + depId);
+        console.log("userId: " + userId);
         $(function() {
-            function selectSearch() {
-                $('.selectSearch').select2({
-                    width: '100%'
-                })
-            }
+            bsCustomFileInput.init();
+            // console.log(bsCustomFileInput);
+            // bsCustomFileInput.defaults.customText = "Custom Button Text";
+
+            $('.select2').select2({
+                width: '100%'
+            })
 
             //Date picker
             $('#expire_date').datetimepicker({
@@ -144,6 +180,15 @@ echo '<pre>', print_r($_SESSION, 1), '</pre>';
 
             $('#detail').summernote({
                 height: 300,
+            });
+
+            $('#doc_type').on('select2:select', function(e) {
+                var selectedValue = e.params.data.id;
+                // var selectedText = e.params.data.text;
+
+                // console.log('Selected Value: ' + selectedValue);
+                // console.log('Selected Text: ' + selectedText);
+                getDataDoc(depId, selectedValue)
             });
 
             $('#formData').on('submit', function(e) {
@@ -165,17 +210,17 @@ echo '<pre>', print_r($_SESSION, 1), '</pre>';
                 // var data = $('#formData').serializeArray();
                 var data = $('#formData').serializeObject();
                 // var form = new FormData(this);
-                console.log(data);
+                // console.log(data);
 
-                // const fdata = new FormData();
-                // fdata.append("attachment", doc_file.files[0]);
-                // fdata.append("filename", doc_name.filename);
-                // fdata.append("expireDate", expire_date.expireDate);
-                // fdata.append("refId", data.cusId);
-                // fdata.append("refDepId", data.cusId);
-                // fdata.append("refDocTypeId", data.cusId);
-                // fdata.append("refUserId", data.cusId);
-                // console.log(fdata);
+                const fdata = new FormData();
+                fdata.append("fileName", file.files[0]);
+                fdata.append("imageName", data.doc_name);
+                fdata.append("expireDate", formatDate(data.expire));
+                fdata.append("refId", data.refId);
+                fdata.append("depId", depId);
+                fdata.append("docType", data.doc_type);
+                fdata.append("userId", userId);
+                console.log(fdata);
                 // Get the file input element and the selected file
                 // var fileInput = $("#fileInput")[0];
                 // var file = fileInput.files[0];
@@ -184,25 +229,90 @@ echo '<pre>', print_r($_SESSION, 1), '</pre>';
                 // var formData = new FormData();
                 // formData.append("file", file);
 
-                // // Perform the AJAX POST request
-                // $.ajax({
-                //     url: "upload.php", // Replace "upload.php" with the URL to your server-side file handling script
-                //     type: "POST",
-                //     data: formData,
-                //     processData: false, // Prevent jQuery from processing the data
-                //     contentType: false, // Prevent jQuery from setting the Content-Type header
-                //     success: function(response) {
-                //         // Handle the server's response here
-                //         console.log("File uploaded successfully!", response);
-                //     },
-                //     error: function(xhr, status, error) {
-                //         // Handle the error
-                //         console.error("Error occurred:", error);
-                //     }
-                // });
+                // Perform the AJAX POST request
+                $.ajax({
+                    url: '<?= API_URL ?>v2/document', // Replace "upload.php" with the URL to your server-side file handling script
+                    type: "POST",
+                    data: fdata,
+                    processData: false, // Prevent jQuery from processing the data
+                    contentType: false, // Prevent jQuery from setting the Content-Type header
+                    success: function(response) {
+                        // Handle the server's response here
+                        // console.log("File uploaded successfully!", response);
+                        Swal.fire({
+                            text: 'เพิ่มข้อมูลเรียบร้อย',
+                            icon: 'success',
+                            confirmButtonText: 'ตกลง',
+                        }).then((result) => {
+                            location.assign('<?= BASE_URL ?>pages/documents');
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle the error
+                        console.error("Error occurred:", error);
+                    }
+                });
             });
-            selectSearch()
-            selectDataSearch(0)
+
+            $('#formDataxxx').validate({
+                rules: {
+                    docType: {
+                        required: true,
+                    },
+                    docTypeDet: {
+                        required: true,
+                    },
+                    refId: {
+                        required: true,
+                    },
+                },
+                messages: {
+                    docType: {
+                        required: "Please select document type",
+                    },
+                    docTypeDet: {
+                        required: "Please provide a password",
+                    },
+                    refId: {
+                        required: "Please provide a password",
+                    },
+                },
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+            $.validator.setDefaults({
+                submitHandler: function() {
+                    console.log($(this).serialize())
+                    alert("Form successful submitted!");
+                    e.preventDefault()
+                    // $.ajax({
+                    //     type: 'POST',
+                    //     url: '<//?= API_URL ?>v2/department/add',
+                    //     data: $('#formData').serialize()
+                    // }).done(function(resp) {
+                    //     Swal.fire({
+                    //         text: 'เพิ่มข้อมูลเรียบร้อย',
+                    //         icon: 'success',
+                    //         confirmButtonText: 'ตกลง',
+                    //     }).then((result) => {
+                    //         location.assign('<//?= BASE_URL ?>pages/department');
+                    //     });
+                    // })
+                }
+            });
+            // selectSearch()
+            // selectDataSearch(0)
+            getDataDocType(depId)
+            getDataDoc(depId, 0)
         });
 
         function selectDataSearch(id) {
@@ -229,6 +339,97 @@ echo '<pre>', print_r($_SESSION, 1), '</pre>';
                     });
                 },
             });
+        }
+
+
+        function getDataDocType(id) {
+            // console.log(el);
+            $.ajax({
+                url: "<?= API_URL ?>" + `v2/documentType/${id}/parent`,
+                method: "GET",
+                success: function(result) {
+                    // console.log(result);
+                    $("#doc_type").html("");
+                    $("#doc_type").append(
+                        `<option></option>`
+                    );
+                    $.each(result.data, function(index, ref) {
+                        // var select = "";
+                        // if (ref.id == id) {
+                        //     select = ' selected = "selected"';
+                        // }
+                        $("#doc_type").append(
+                            '<option value="' +
+                            ref.id +
+                            '"' +
+                            // select +
+                            `>${ref.desc} [${ref.expire}]</option>`
+                        );
+                    });
+                },
+            });
+        }
+
+        function getDataDoc(id, doc) {
+            // console.log(el);
+            $.ajax({
+                url: "<?= API_URL ?>" + `v2/documentType/${id}/all/${doc}`,
+                method: "GET",
+                success: function(result) {
+                    // console.log(result);
+                    $("#doc_type_det").html("");
+                    $("#doc_type_det").append(
+                        `<option></option>`
+                    );
+                    $.each(result.data, function(index, ref) {
+                        // var select = "";
+                        // if (ref.id == id) {
+                        //     select = ' selected = "selected"';
+                        // }
+                        $("#doc_type_det").append(
+                            '<option value="' +
+                            ref.id +
+                            '"' +
+                            // select +
+                            `>${ref.desc} [${ref.expire}]</option>`
+                        );
+                    });
+                },
+            });
+        }
+
+        // function formatDate(inputDate) {
+        //     const parts = inputDate.split('/');
+        //     const day = parts[0];
+        //     const month = parts[1];
+        //     const year = parts[2];
+
+        //     // Create a new Date object (months are 0-based in JavaScript)
+        //     const dateObject = new Date(year, month - 1, day);
+
+        //     // Format the date in the desired format
+        //     const options = {
+        //         year: 'numeric',
+        //         month: 'long',
+        //         day: 'numeric'
+        //     };
+        //     return dateObject.toLocaleDateString(undefined, options);
+        // }
+
+        function formatDate(inputDate) {
+            const parts = inputDate.split('/');
+            const day = parts[1];
+            const month = parts[0];
+            const year = parts[2];
+            
+            return `${year}-${month}-${day}`;
+
+            // Create a new Date object (months are 0-based in JavaScript)
+            // const dateObject = new Date(year, month - 1, day);
+
+            // Format the date in the desired format (yyyy-mm-dd)
+            // const formattedDate = `${dateObject.getFullYear()}-${(month < 10 ? '0' : '') + month}-${(day < 10 ? '0' : '') + day}`;
+            // return formattedDate;
         }
     </script>
 </body>

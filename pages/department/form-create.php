@@ -78,6 +78,8 @@ require_once('../authen.php');
     <script src="../../plugins/sweetalert2/sweetalert2.min.js"></script>
     <script src="../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
     <script src="../../plugins/select2/js/select2.full.min.js"></script>
+    <script src="../../plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="../../plugins/jquery-validation/additional-methods.min.js"></script>
     <script src="../../assets/js/adminlte.min.js"></script>
 
     <script>
@@ -88,7 +90,7 @@ require_once('../authen.php');
             $("input[data-bootstrap-switch]").each(function() {
                 $(this).bootstrapSwitch('state', $(this).prop('checked'));
             })
-            $('#formData').on('submit', function(e) {
+            $('#formDataxxx').on('submit', function(e) {
                 e.preventDefault()
                 console.log($(this).serialize())
                 $.ajax({
@@ -104,6 +106,57 @@ require_once('../authen.php');
                         location.assign('<?= BASE_URL ?>pages/department');
                     });
                 })
+            });
+            $.validator.setDefaults({
+                submitHandler: function() {
+                    // alert("Form successful submitted!");
+                    e.preventDefault()
+                    console.log($(this).serialize())
+                    $.ajax({
+                        type: 'POST',
+                        url: '<?= API_URL ?>v2/department/add',
+                        data: $('#formData').serialize()
+                    }).done(function(resp) {
+                        Swal.fire({
+                            text: 'เพิ่มข้อมูลเรียบร้อย',
+                            icon: 'success',
+                            confirmButtonText: 'ตกลง',
+                        }).then((result) => {
+                            location.assign('<?= BASE_URL ?>pages/department');
+                        });
+                    })
+                }
+            });
+            $('#formData').validate({
+                rules: {
+                    code: {
+                        required: true,
+                    },
+                    desc: {
+                        required: true,
+                        minlength: 5
+                    },
+                },
+                messages: {
+                    code: {
+                        required: "Please enter a email address",
+                    },
+                    desc: {
+                        required: "Please provide a password",
+                        minlength: "Your password must be at least 5 characters long"
+                    },
+                },
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
             });
         });
     </script>
