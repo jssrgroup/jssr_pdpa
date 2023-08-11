@@ -86,7 +86,17 @@ require_once('../authen.php');
                                                 <div class="form-group">
                                                     <label for="expire">กำหนดอายุเอกสาร</label>
                                                     <input type="text" class="form-control" name="expire" id="expire" placeholder="กำหนดอายุเอกสาร" aria-describedby="expireHelp">
-                                                    <small id="expireHelp" class="form-text text-muted">Ex. 90 days<br />Ex. 6 months<br />Ex. 3 years</small>
+                                                    <small id="expireHelp" class="form-text text-muted">Ex. 90</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label for="expire_type">กำหนดประเภทอายุเอกสาร</label>
+                                                    <select class="custom-select select2" id="expire_type" name="expire_type" data-placeholder="ค้นหาด้วยชื่อ">
+                                                        <option value="DAY">DAY</option>
+                                                        <option value="MONTH">MONTH</option>
+                                                        <option value="YEAR">YEAR</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -177,6 +187,7 @@ require_once('../authen.php');
                     // },
                     expire: {
                         required: true,
+                        number: true,
                     },
                 },
                 messages: {
@@ -192,6 +203,7 @@ require_once('../authen.php');
                     // },
                     expire: {
                         required: "เอกสารหมดอายุ ห้ามเว้นว่าง",
+                        number: "เป็นตัวเลข เท่านั้น",
                     },
                 },
                 errorElement: 'span',

@@ -93,7 +93,7 @@ require_once('../authen.php');
                         item.desc,
                         item.parentDesc,
                         item.pattern,
-                        item.expire,
+                        `${item.expire} ${item.expire_type}`,
                         `<div class="btn-group" role="group">
                             <a href="<?= BASE_URL ?>pages/documentType/form-edit.php?id=${item.id}" type="button" class="btn btn-warning text-white">
                                 <i class="far fa-edit"></i> แก้ไข
