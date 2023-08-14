@@ -6,11 +6,11 @@
  * @link https://appzstory.dev
  * @author Yothin Sapsamran (Jame AppzStory Studio)
  */
-function isActive($data)
+function isActive($data, $step = 1)
 {
     $array = explode('/', $_SERVER['REQUEST_URI']);
     $key = array_search("pages", $array);
-    $name = $array[$key + 1];
+    $name = $array[$key + $step];
     return $name === $data ? 'active' : '';
 }
 ?>
@@ -111,6 +111,13 @@ function isActive($data)
                     <a href="<?= BASE_URL ?>pages/documents/" class="nav-link <?php echo isActive('documents') ?>">
                         <i class="nav-icon fas fa-solid fa-file text-maroon"></i>
                         <p>เอกสาร</p>
+                    </a>
+                </li>
+                <li class="nav-header">รายงาน</li>
+                <li class="nav-item">
+                    <a href="<?= BASE_URL ?>pages/report/expireStep" class="nav-link <?php echo isActive('expireStep', 2) ?>">
+                        <i class="nav-icon fas fa-solid fa-file text-maroon"></i>
+                        <p>เอกสารหมดอายุ</p>
                     </a>
                 </li>
                 <li class="nav-header">บัญชีของเรา</li>

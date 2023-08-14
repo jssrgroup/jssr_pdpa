@@ -1,14 +1,8 @@
 <?php 
-    /**
-     * Main Footer
-     * 
-     * @link https://appzstory.dev
-     * @author Yothin Sapsamran (Jame AppzStory Studio)
-     */
-    require_once('../authen.php'); 
+    // require_once('../authen.php'); 
 ?>
 <footer class="main-footer">
-    <strong>Copyright &copy; 2021 - 2023
-        <a href="https://appzstory.dev" target="_blank">appzstory.dev</a>.
+    <strong>Copyright &copy; <?= date('Y')?>
+        <a href="https://www.jssr.co.th" target="_blank">www.jssr.co.th</a>.
     </strong> All rights reserved.
 </footer>
