@@ -105,7 +105,7 @@ require "config.php";
 
       $(".acc-acc").click(function() {
         $("input[name='username']").val('ann')
-        $("input[name='password']").val('Ann@74253')
+        $("input[name='password']").val('Ann@41025')
         $("#formLogin").submit()
       })
 
