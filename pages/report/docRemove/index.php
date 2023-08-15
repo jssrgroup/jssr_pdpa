@@ -17,7 +17,7 @@ require_once('../../authenSub.php');
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>รายงานเอกสารใกล้หมดอายุ | <?= APP_NAME ?></title>
+    <title>รายงานเอกสารที่ลบแล้ว | <?= APP_NAME ?></title>
     <link rel="shortcut icon" type="image/x-icon" href="<?= BASE_URL ?>assets/images/favicon.ico">
     <!-- stylesheet -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit">
@@ -53,8 +53,8 @@ require_once('../../authenSub.php');
                             <div class="card shadow">
                                 <div class="card-header border-0 pt-4">
                                     <h4>
-                                        <i class="fas  fa-solid fa-file text-warning"></i>
-                                        รายงานเอกสารใกล้หมดอายุ
+                                        <i class="fas  fa-solid fa-file text-maroon"></i>
+                                        รายงานเอกสารที่ลบแล้ว
                                     </h4>
                                 </div>
                                 <div class="card-body">

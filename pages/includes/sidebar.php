@@ -116,8 +116,20 @@ function isActive($data, $step = 1)
                 <li class="nav-header">รายงาน</li>
                 <li class="nav-item">
                     <a href="<?= BASE_URL ?>pages/report/expireStep" class="nav-link <?php echo isActive('expireStep', 2) ?>">
+                        <i class="nav-icon fas fa-solid fa-file text-warning"></i>
+                        <p>เอกสารใกล้หมดอายุ</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= BASE_URL ?>pages/report/docRemove" class="nav-link <?php echo isActive('docRemove', 2) ?>">
                         <i class="nav-icon fas fa-solid fa-file text-maroon"></i>
-                        <p>เอกสารหมดอายุ</p>
+                        <p>เอกสารที่ลบแล้ว</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= BASE_URL ?>pages/report/historyOpenDoc" class="nav-link <?php echo isActive('historyOpenDoc', 2) ?>">
+                        <i class="nav-icon fas fa-solid fa-file text-gray"></i>
+                        <p>การเข้าดูเอกสาร</p>
                     </a>
                 </li>
                 <li class="nav-header">บัญชีของเรา</li>

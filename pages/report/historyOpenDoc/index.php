@@ -17,7 +17,7 @@ require_once('../../authenSub.php');
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>รายงานเอกสารใกล้หมดอายุ | <?= APP_NAME ?></title>
+    <title>รายงานการเข้าดูเอกสาร | <?= APP_NAME ?></title>
     <link rel="shortcut icon" type="image/x-icon" href="<?= BASE_URL ?>assets/images/favicon.ico">
     <!-- stylesheet -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit">
@@ -53,8 +53,8 @@ require_once('../../authenSub.php');
                             <div class="card shadow">
                                 <div class="card-header border-0 pt-4">
                                     <h4>
-                                        <i class="fas  fa-solid fa-file text-warning"></i>
-                                        รายงานเอกสารใกล้หมดอายุ
+                                        <i class="fas  fa-solid fa-file text-gray"></i>
+                                        รายงานการเข้าดูเอกสาร
                                     </h4>
                                 </div>
                                 <div class="card-body">
@@ -88,7 +88,7 @@ require_once('../../authenSub.php');
         $(function() {
             $.ajax({
                 type: "GET",
-                url: "<?= API_URL ?>" + `v2/document/report/expire/${depId}/all`
+                url: "<?= API_URL ?>" + `v2/log`
                 // url: "<?= API_URL ?>" + `v2/document/report/expire`
             }).done(function(data) {
                 // console.log(data.data);
@@ -97,19 +97,14 @@ require_once('../../authenSub.php');
                     tableData.push([
                         ++index,
                         item.id,
-                        item.ref_dep_id,
-                        item.create_doc_date,
-                        item.doc_type_id,
-                        item.doc_id,
-                        item.image_name,
-                        item.expire_doc_date,
-                        item.document_expire_type,
-                        item.document_expire,
-                        item.doctype_expire_type,
-                        item.doctype_expire,
-                        item.remain_date,
-                        item.doc_remain_date,
-                        item.type_remain_date,
+                        item.userId,
+                        item.docId,
+                        item.createdate,
+                        item.user,
+                        item.doc,
+                        item.class,
+                        item.method,
+                        item.behavior,
                     ])
                 })
                 initDataTables(tableData)
@@ -136,20 +131,21 @@ require_once('../../authenSub.php');
                             "visible": false
                         },
                         {
-                            title: "แผนก",
+                            title: "UserId",
                             className: "align-middle", // Index of the column (0-based)
                             "visible": false
                         },
                         {
-                            title: "วันที่สร้าง",
+                            title: "DocId",
+                            className: "align-middle", // Index of the column (0-based)
+                            "visible": false
+                        },
+                        {
+                            title: "วันที่",
                             className: "align-middle"
                         },
                         {
-                            title: "ชื่อประเภทเอกสาร",
-                            className: "align-middle"
-                        },
-                        {
-                            title: "เอกสาร",
+                            title: "ชื่อผู้ใช้งาน",
                             className: "align-middle"
                         },
                         {
@@ -157,37 +153,16 @@ require_once('../../authenSub.php');
                             className: "align-middle"
                         },
                         {
-                            title: "วันหมดอายุ",
+                            title: "Class",
                             className: "align-middle"
                         },
                         {
-                            title: "จำนวนหมดอายุ",
+                            title: "Method",
                             className: "align-middle"
                         },
                         {
-                            title: "เอกสารหมดอายุ",
+                            title: "Behavior",
                             className: "align-middle"
-                        },
-                        {
-                            title: "จำนวนหมดอายุ",
-                            className: "align-middle"
-                        },
-                        {
-                            title: "ประเภทหมดอายุ",
-                            className: "align-middle"
-                        },
-                        {
-                            title: "",
-                            className: "align-middle", // Index of the column (0-based)
-                            "visible": false
-                        },      {
-                            title: "",
-                            className: "align-middle", // Index of the column (0-based)
-                            "visible": false
-                        },      {
-                            title: "",
-                            className: "align-middle", // Index of the column (0-based)
-                            "visible": false
                         },
                     ],
                     initComplete: function() {

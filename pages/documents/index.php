@@ -7,6 +7,7 @@
  * @author Yothin Sapsamran (Jame AppzStory Studio)
  */
 require_once('../authen.php');
+// echo '<pre>', print_r($_SESSION['LOGIN'], 1), '</pre>';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,21 +16,21 @@ require_once('../authen.php');
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>จัดการเอกสาร | <?= APP_NAME ?></title>
-    <link rel="shortcut icon" type="image/x-icon" href="../../assets/images/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="<?= BASE_URL ?>assets/images/favicon.ico">
     <!-- stylesheet -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit">
-    <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
-    <link rel="stylesheet" href="../../plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
-    <link rel="stylesheet" href="../../assets/css/adminlte.min.css">
-    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/adminlte.min.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/style.css">
     <!-- Datatables -->
-    <link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 </head>
 
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
-        <?php include_once('../includes/sidebar.php') ?>
+        <?php include_once($_SERVER['DOCUMENT_ROOT'] . '/pages/includes/sidebar.php') ?>
         <div class="content-wrapper pt-3">
             <!-- Main content -->
             <div class="content">
@@ -56,20 +57,23 @@ require_once('../authen.php');
                 </div>
             </div>
         </div>
-        <?php include_once('../includes/footer.php') ?>
+        <?php include_once($_SERVER['DOCUMENT_ROOT'] . '/pages/includes/footer.php') ?>
     </div>
+    <form id="preview" action="<?= BASE_URL ?>pages/viewer/pdf/index.php" method="post" target="_blank">
+        <input type="hidden" name="e" id="e">
+    </form>
 
     <!-- scripts -->
-    <script src="../../plugins/jquery/jquery.min.js"></script>
-    <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../../plugins/sweetalert2/sweetalert2.min.js"></script>
-    <script src="../../assets/js/adminlte.min.js"></script>
+    <script src="<?= BASE_URL ?>plugins/jquery/jquery.min.js"></script>
+    <script src="<?= BASE_URL ?>plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= BASE_URL ?>plugins/sweetalert2/sweetalert2.min.js"></script>
+    <script src="<?= BASE_URL ?>assets/js/adminlte.min.js"></script>
 
     <!-- datatables -->
-    <script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="<?= BASE_URL ?>plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="<?= BASE_URL ?>plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="<?= BASE_URL ?>plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="<?= BASE_URL ?>plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 
     <script>
         const url = '<?= API_URL ?>'
@@ -84,6 +88,7 @@ require_once('../authen.php');
                     tableData.push([
                         // `<span class="btn btn-outline-${item.ref_doc_type_id==1?'success':item.ref_doc_type_id==2?'info':item.ref_doc_type_id==3?'warning':'primary'}"> ${item.ref_doc_type} </span>`,
                         // `<span class="btn btn-outline-info"> ${item.ref_doc_type}[${item.id}] </span>`,
+                        // item.id,
                         item.ref_doc_type,
                         item.ref_doc,
                         item.ref_dep,
@@ -98,7 +103,7 @@ require_once('../authen.php');
                         //     <i class="fas fa-search"></i> ดูข้อมูล
                         // </a>`,
                         `<div class="btn-group" role="group">
-                            <button type="button" class="btn btn-info" id="preview" data-file-nane="${item.file_name}">
+                            <button type="button" class="btn btn-info" id="preview" data-doc-id="${item.id}" data-file-name="${item.file_name}">
                                 <i class="far fa-eye"></i> ดูู
                             </button>
                         </div>`
@@ -157,41 +162,39 @@ require_once('../authen.php');
                     ],
                     initComplete: function() {
                         $(document).on('click', '#preview', function() {
-                            const fileName = $(this).data('file-nane')
+                            const fileName = $(this).data('file-name')
+                            const docId = $(this).data('doc-id')
+                            // window.open("<//?= BASE_URL ?>"+`pages/viewer/pdf/index.php?e=${fileName}`, "_blank", "noopener,noreferrer");
+                            // console.log(docId);
+                            // $('#e').val(fileName)
+                            // console.log($('#e').val());
+                            // // $('#preview').submit()
+                            // document.getElementById("preview").submit();
+
                             // console.log(fileName);
-                            $.ajax({
-                                type: "GET",
-                                url: `${url}v2/document/${fileName}`,
-                            }).done(function(data) {
-                                // console.log(data); // แสดงข้อมูล JSON จาก then ข้างบน
-                                // console.log(data.url); // แสดงข้อมูล JSON จาก then ข้างบน
-                                window.open(data.url, "_blank", "noopener,noreferrer");
-                            })
-                            // Swal.fire({
-                            //     text: "คุณแน่ใจหรือไม่...ที่จะลบรายการนี้?",
-                            //     icon: 'warning',
-                            //     showCancelButton: true,
-                            //     confirmButtonText: 'ใช่! ลบเลย',
-                            //     cancelButtonText: 'ยกเลิก'
-                            // }).then((result) => {
-                            //     if (result.isConfirmed) {
-                            //         $.ajax({
-                            //             type: "DELETE",
-                            //             url: "../../service/members/delete.php",
-                            //             data: {
-                            //                 id: id
-                            //             }
-                            //         }).done(function() {
-                            //             Swal.fire({
-                            //                 text: 'รายการของคุณถูกลบเรียบร้อย',
-                            //                 icon: 'success',
-                            //                 confirmButtonText: 'ตกลง',
-                            //             }).then((result) => {
-                            //                 location.reload()
-                            //             })
-                            //         })
-                            //     }
+                            // $.ajax({
+                            //     type: "GET",
+                            //     url: `${url}v2/document/${fileName}`,
+                            // }).done(function(data) {
+                            //     // console.log(data); // แสดงข้อมูล JSON จาก then ข้างบน
+                            //     // console.log(data.url); // แสดงข้อมูล JSON จาก then ข้างบน
+                            //     window.open(data.url, "_blank", "noopener,noreferrer");
                             // })
+                            $.ajax({
+                                url: `${url}v2/document/${fileName}`,
+                                method: 'GET', // Change to the appropriate HTTP method
+                                headers: {
+                                    'Authorization': 'Bearer <?= $_SESSION['LOGIN']['access_token']?>'
+                                },
+                                data: {docId: docId},
+                                success: function(response) {
+                                    // console.log(response);
+                                    window.open(response.url, "_blank", "noopener,noreferrer");
+                                },
+                                error: function(xhr, status, error) {
+                                    console.log(error);
+                                }
+                            });
                         })
                     },
                     responsive: {
