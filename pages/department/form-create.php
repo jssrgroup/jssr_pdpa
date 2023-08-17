@@ -92,23 +92,6 @@ require_once('../authen.php');
             $("input[data-bootstrap-switch]").each(function() {
                 $(this).bootstrapSwitch('state', $(this).prop('checked'));
             })
-            $('#formDataxxx').on('submit', function(e) {
-                e.preventDefault()
-                console.log($(this).serialize())
-                $.ajax({
-                    type: 'POST',
-                    url: '<?= API_URL ?>v2/department/add',
-                    data: $('#formData').serialize()
-                }).done(function(resp) {
-                    Swal.fire({
-                        text: 'เพิ่มข้อมูลเรียบร้อย',
-                        icon: 'success',
-                        confirmButtonText: 'ตกลง',
-                    }).then((result) => {
-                        location.assign('<?= BASE_URL ?>pages/department');
-                    });
-                })
-            });
             $.validator.setDefaults({
                 submitHandler: function() {
                     // alert("Form successful submitted!");
@@ -160,7 +143,12 @@ require_once('../authen.php');
                     $.ajax({
                         type: 'POST',
                         url: '<?= API_URL ?>v2/department/add',
-                        data: $('#formData').serialize()
+                        data: $('#formData').serialize(),
+                        timeout: 0,
+                        headers: {
+                            "Accept": "application/json",
+                            "Authorization": "Bearer <?= $_SESSION['LOGIN']['access_token'] ?>"
+                        },
                     }).done(function(resp) {
                         Swal.fire({
                             text: 'เพิ่มข้อมูลเรียบร้อย',

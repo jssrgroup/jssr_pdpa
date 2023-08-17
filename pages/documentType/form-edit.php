@@ -137,7 +137,12 @@ require_once('../authen.php');
                 $.ajax({
                     type: 'GET',
                     url: "<?= API_URL ?>" + `v2/documentType/${id}`,
-                    data: $('#formData').serialize()
+                    data: $('#formData').serialize(),
+                    timeout: 0,
+                    headers: {
+                        "Accept": "application/json",
+                        "Authorization": "Bearer <?= $_SESSION['LOGIN']['access_token'] ?>"
+                    },
                 }).done(function(resp) {
                     console.log(resp.data);
                     $("#code").val(resp.data.code)
@@ -155,43 +160,6 @@ require_once('../authen.php');
             $("input[data-bootstrap-switch]").each(function() {
                 $(this).bootstrapSwitch('state', $(this).prop('checked'));
             })
-            $('#formDataxxx').on('submit', function(e) {
-                e.preventDefault()
-                console.log($(this).serialize())
-                // $.ajax({
-                //     type: 'POST',
-                //     url: '<?= API_URL ?>v2/department/add',
-                //     data: $('#formData').serialize()
-                // }).done(function(resp) {
-                //     Swal.fire({
-                //         text: 'เพิ่มข้อมูลเรียบร้อย',
-                //         icon: 'success',
-                //         confirmButtonText: 'ตกลง',
-                //     }).then((result) => {
-                //         location.assign('<?= BASE_URL ?>pages/department');
-                //     });
-                // })
-            });
-            // $.validator.setDefaults({
-            //     submitHandler: function() {
-            //         // alert("Form successful submitted!");
-            //         e.preventDefault()
-            //         console.log($(this).serialize())
-            //         $.ajax({
-            //             type: 'POST',
-            //             url: '<?= API_URL ?>v2/department/add',
-            //             data: $('#formData').serialize()
-            //         }).done(function(resp) {
-            //             Swal.fire({
-            //                 text: 'เพิ่มข้อมูลเรียบร้อย',
-            //                 icon: 'success',
-            //                 confirmButtonText: 'ตกลง',
-            //             }).then((result) => {
-            //                 location.assign('<?= BASE_URL ?>pages/department');
-            //             });
-            //         })
-            //     }
-            // });
             $('#formData').submit(function(e) {
                 e.preventDefault();
             }).validate({
@@ -250,8 +218,13 @@ require_once('../authen.php');
                     console.log($('#formData').serialize())
                     $.ajax({
                         type: 'POST',
-                        url: '<?= API_URL ?>'+`v2/documentType/${id}/update`,
-                        data: $('#formData').serialize()
+                        url: '<?= API_URL ?>' + `v2/documentType/${id}/update`,
+                        data: $('#formData').serialize(),
+                        timeout: 0,
+                        headers: {
+                            "Accept": "application/json",
+                            "Authorization": "Bearer <?= $_SESSION['LOGIN']['access_token'] ?>"
+                        },
                     }).done(function(resp) {
                         Swal.fire({
                             text: 'อัพเดทข้อมูลเรียบร้อย',
@@ -273,6 +246,11 @@ require_once('../authen.php');
             $.ajax({
                 url: "<?= API_URL ?>" + `v2/documentType/${id}/parent`,
                 method: "GET",
+                timeout: 0,
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": "Bearer <?= $_SESSION['LOGIN']['access_token'] ?>"
+                },
                 success: function(result) {
                     // console.log(result);
                     $("#parent").html("");

@@ -82,13 +82,13 @@ function isActive($data, $step = 1)
                         <p>ประเภทเอกสาร</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item d-none">
                     <a href="<?= BASE_URL ?>pages/employees/" class="nav-link <?php echo isActive('employees') ?>">
                         <i class="nav-icon fas fa-user text-yellow"></i>
                         <p>รายชื่อพนักงาน</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item d-none">
                     <a href="<?= BASE_URL ?>pages/members/" class="nav-link <?php echo isActive('members') ?>">
                         <i class="nav-icon fas fa-users text-indigo"></i>
                         <p>รายชื่อลูกค้า</p>

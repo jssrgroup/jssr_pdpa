@@ -1,12 +1,7 @@
 <?php
 
-/**
- * Login Page
- *
- * @link https://appzstory.dev
- * @author Yothin Sapsamran (Jame AppzStory Studio)
- */
 require "config.php";
+echo '<pre>', print_r($_SESSION, 1), '</pre>';
 ?>
 <!DOCTYPE html>
 <html>

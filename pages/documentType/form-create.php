@@ -242,7 +242,12 @@ require_once('../authen.php');
                     $.ajax({
                         type: 'POST',
                         url: '<?= API_URL ?>v2/documentType/add',
-                        data: $('#formData').serialize()
+                        data: $('#formData').serialize(),
+                        timeout: 0,
+                        headers: {
+                            "Accept": "application/json",
+                            "Authorization": "Bearer <?= $_SESSION['LOGIN']['access_token'] ?>"
+                        },
                     }).done(function(resp) {
                         Swal.fire({
                             text: 'เพิ่มข้อมูลเรียบร้อย',
@@ -263,6 +268,11 @@ require_once('../authen.php');
             $.ajax({
                 url: "<?= API_URL ?>" + `v2/documentType/${id}/parent`,
                 method: "GET",
+                timeout: 0,
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": "Bearer <?= $_SESSION['LOGIN']['access_token'] ?>"
+                },
                 success: function(result) {
                     // console.log(result);
                     $("#parent").html("");

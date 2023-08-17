@@ -80,7 +80,12 @@ require_once('../authen.php');
         $(function() {
             $.ajax({
                 type: "GET",
-                url: "<?= API_URL ?>" + `v2/documentType/${depId}/all`
+                url: "<?= API_URL ?>" + `v2/documentType/${depId}/all`,
+                timeout: 0,
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": "Bearer <?= $_SESSION['LOGIN']['access_token'] ?>"
+                },
             }).done(function(data) {
                 // console.log(data.data);
                 let tableData = []
@@ -170,6 +175,11 @@ require_once('../authen.php');
                                     $.ajax({
                                         type: "POST",
                                         url: `<?= API_URL ?>v2/documentType/${id}/delete`,
+                                        timeout: 0,
+                                        headers: {
+                                            "Accept": "application/json",
+                                            "Authorization": "Bearer <?= $_SESSION['LOGIN']['access_token'] ?>"
+                                        },
                                     }).done(function() {
                                         Swal.fire({
                                             text: 'รายการของคุณถูกลบเรียบร้อย',

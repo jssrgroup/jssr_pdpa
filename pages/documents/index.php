@@ -81,7 +81,12 @@ require_once('../authen.php');
         $(function() {
             $.ajax({
                 type: "GET",
-                url: `${url}v2/document/${depId}/all`
+                url: `${url}v2/document/${depId}/all`,
+                timeout: 0,
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": "Bearer <?= $_SESSION['LOGIN']['access_token'] ?>"
+                },
             }).done(function(data) {
                 let tableData = []
                 data.data.forEach(function(item, index) {
@@ -171,22 +176,17 @@ require_once('../authen.php');
                             // // $('#preview').submit()
                             // document.getElementById("preview").submit();
 
-                            // console.log(fileName);
-                            // $.ajax({
-                            //     type: "GET",
-                            //     url: `${url}v2/document/${fileName}`,
-                            // }).done(function(data) {
-                            //     // console.log(data); // แสดงข้อมูล JSON จาก then ข้างบน
-                            //     // console.log(data.url); // แสดงข้อมูล JSON จาก then ข้างบน
-                            //     window.open(data.url, "_blank", "noopener,noreferrer");
-                            // })
                             $.ajax({
                                 url: `${url}v2/document/${fileName}`,
-                                method: 'GET', // Change to the appropriate HTTP method
+                                method: 'GET',
+                                timeout: 0,
                                 headers: {
-                                    'Authorization': 'Bearer <?= $_SESSION['LOGIN']['access_token']?>'
+                                    "Accept": "application/json",
+                                    "Authorization": "Bearer <?= $_SESSION['LOGIN']['access_token'] ?>"
                                 },
-                                data: {docId: docId},
+                                data: {
+                                    docId: docId
+                                },
                                 success: function(response) {
                                     // console.log(response);
                                     window.open(response.url, "_blank", "noopener,noreferrer");

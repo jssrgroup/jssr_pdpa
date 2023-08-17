@@ -42,7 +42,7 @@ require_once('../authen.php');
                                         <i class="fas fa-building"></i>
                                         แผนก
                                     </h4>
-                                    <a href="<?= BASE_URL?>pages/department/form-create.php" class="btn btn-primary mt-3">
+                                    <a href="<?= BASE_URL ?>pages/department/form-create.php" class="btn btn-primary mt-3">
                                         <i class="fas fa-plus"></i>
                                         เพิ่มข้อมูล
                                     </a>
@@ -76,7 +76,12 @@ require_once('../authen.php');
         $(function() {
             $.ajax({
                 type: "GET",
-                url: "<?= API_URL ?>v2/department/all"
+                url: "<?= API_URL ?>v2/department/all",
+                timeout: 0,
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": "Bearer <?= $_SESSION['LOGIN']['access_token'] ?>"
+                },
             }).done(function(data) {
                 // console.log(data.data);
                 let tableData = []
@@ -86,7 +91,7 @@ require_once('../authen.php');
                         `<span class="badge badge-info">${item.code}</span>`,
                         item.desc,
                         `<div class="btn-group" role="group">
-                            <a href="<?= BASE_URL?>pages/department/form-edit.php?id=${item.id}" type="button" class="btn btn-warning text-white">
+                            <a href="<?= BASE_URL ?>pages/department/form-edit.php?id=${item.id}" type="button" class="btn btn-warning text-white">
                                 <i class="far fa-edit"></i> แก้ไข
                             </a>
                             <button type="button" class="btn btn-danger" id="delete" data-id="${item.id}" data-index="${index}">
@@ -140,7 +145,12 @@ require_once('../authen.php');
                                 if (result.isConfirmed) {
                                     $.ajax({
                                         type: "POST",
-                                        url: `<?= API_URL?>v2/department/${id}/delete`,
+                                        url: `<?= API_URL ?>v2/department/${id}/delete`,
+                                        timeout: 0,
+                                        headers: {
+                                            "Accept": "application/json",
+                                            "Authorization": "Bearer <?= $_SESSION['LOGIN']['access_token'] ?>"
+                                        },
                                     }).done(function() {
                                         Swal.fire({
                                             text: 'รายการของคุณถูกลบเรียบร้อย',

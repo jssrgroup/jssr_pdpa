@@ -7,6 +7,7 @@
  * @author Yothin Sapsamran (Jame AppzStory Studio)
  */
 require_once('../authen.php');
+// echo '<pre>', print_r($_SESSION), '</pre>';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -76,7 +77,12 @@ require_once('../authen.php');
         $(function() {
             $.ajax({
                 type: "GET",
-                url: "<?= API_URL ?>v2/userManagement/all"
+                url: "<?= API_URL ?>v2/userManagement/all",
+                timeout: 0,
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": "Bearer <?= $_SESSION['LOGIN']['access_token'] ?>"
+                },
             }).done(function(data) {
                 // console.log(data.data);
                 let tableData = []
@@ -88,7 +94,7 @@ require_once('../authen.php');
                         item.role,
                         `<span class="badge badge-info">${item.status}</span>`,
                         `<div class="btn-group" role="group">
-                            <a href="<?= BASE_URL?>pages/manager/form-edit.php?id=${item.id}" type="button" class="btn btn-warning text-white">
+                            <a href="<?= BASE_URL ?>pages/manager/form-edit.php?id=${item.id}" type="button" class="btn btn-warning text-white">
                                 <i class="far fa-edit"></i> แก้ไข
                             </a>
                             <button type="button" class="btn btn-danger" id="delete" data-id="${item.id}" data-index="${index}">
@@ -98,14 +104,29 @@ require_once('../authen.php');
                     ])
                 })
                 initDataTables(tableData)
-            }).fail(function() {
-                Swal.fire({
-                    text: 'ไม่สามารถเรียกดูข้อมูลได้',
-                    icon: 'error',
-                    confirmButtonText: 'ตกลง',
-                }).then(function() {
-                    location.assign('../dashboard')
-                })
+            }).fail(function(e) {
+                console.log(e.responseJSON.message);
+                if (e.responseJSON.message === 'Token is Expired') {
+                    // $.ajax({
+                    //     "url": "<//?= BASE_URL ?>admin/refresh",
+                    //     "method": "POST",
+                    //     "timeout": 0,
+                    //     "headers": {
+                    //         "Accept": "application/json",
+                    //         "Authorization": "bearer <//?= $_SESSION['LOGIN']['access_token'] ?>"
+                    //     },
+                    // }).done(function(response) {
+                    //     console.log(response);
+                    // });
+                } else {
+                    Swal.fire({
+                        text: 'ไม่สามารถเรียกดูข้อมูลได้',
+                        icon: 'error',
+                        confirmButtonText: 'ตกลง',
+                    }).then(function() {
+                        location.assign('<?= BASE_URL ?>' + `login.php`)
+                    })
+                }
             })
 
             function initDataTables(tableData) {
@@ -150,7 +171,12 @@ require_once('../authen.php');
                                 if (result.isConfirmed) {
                                     $.ajax({
                                         type: "POST",
-                                        url: `<?= API_URL?>v2/userManagement/${id}/delete`,
+                                        url: `<?= API_URL ?>v2/userManagement/${id}/delete`,
+                                        timeout: 0,
+                                        headers: {
+                                            "Accept": "application/json",
+                                            "Authorization": "Bearer <?= $_SESSION['LOGIN']['access_token'] ?>"
+                                        },
                                     }).done(function() {
                                         Swal.fire({
                                             text: 'รายการของคุณถูกลบเรียบร้อย',

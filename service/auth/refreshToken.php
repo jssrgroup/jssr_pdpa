@@ -4,15 +4,10 @@ header('Content-Type: application/json');
 require '../../config.php';
 require_once '../connect.php';
 
-$credencial = array(
-    "username" => $_POST['username'],
-    "password" => $_POST['password'],
-);
-
 $curl = curl_init();
 
 curl_setopt_array($curl, array(
-    CURLOPT_URL => API_URL . 'admin/login',
+    CURLOPT_URL => API_URL . 'admin/refresh',
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => '',
     CURLOPT_MAXREDIRS => 10,
@@ -20,27 +15,23 @@ curl_setopt_array($curl, array(
     CURLOPT_FOLLOWLOCATION => true,
     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
     CURLOPT_CUSTOMREQUEST => 'POST',
-    CURLOPT_POSTFIELDS => http_build_query($credencial),
+    CURLOPT_HTTPHEADER => array(
+        'Accept: application/json',
+        'Authorization: bearer ' . $_SESSION['LOGIN']['access_token']
+    ),
 ));
 
 $response = curl_exec($curl);
 
 curl_close($curl);
+echo $response;
+
 $login = json_decode($response, true);
 
 $_SESSION['LOGIN'] = $login['data'];
 
-
-if (isset($_SESSION['LOGIN'])) {
-    http_response_code(200);
-    echo json_encode($response = [
-        'status' => true,
-        'message' => 'Login Success'
-    ]);
-} else {
-    http_response_code(401);
-    echo json_encode($response = [
-        'status' => false,
-        'message' => 'Unauthenticated.'
-    ]);
-}
+// http_response_code(200);
+// echo json_encode($response = [
+//     'status' => true,
+//     'message' => 'Login Success'
+// ]);

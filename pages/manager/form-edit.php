@@ -128,6 +128,11 @@ require_once('../authen.php');
                 $.ajax({
                     type: 'GET',
                     url: "<?= API_URL ?>" + `v2/userManagement/${id}`,
+                    timeout: 0,
+                    headers: {
+                        "Accept": "application/json",
+                        "Authorization": "Bearer <?= $_SESSION['LOGIN']['access_token'] ?>"
+                    },
                 }).done(function(resp) {
                     // console.log(resp.data);
                     // $("#admin").val(resp.data.userId).trigger("change");
@@ -142,8 +147,6 @@ require_once('../authen.php');
                 width: '100%'
             })
             $(".switch").bootstrapSwitch()
-
-
 
             $('#formData').submit(function(e) {
                 e.preventDefault();
@@ -186,7 +189,12 @@ require_once('../authen.php');
                     $.ajax({
                         type: 'POST',
                         url: '<?= API_URL ?>' + `v2/userManagement/${id}/update`,
-                        data: $('#formData').serialize()
+                        data: $('#formData').serialize(),
+                        timeout: 0,
+                        headers: {
+                            "Accept": "application/json",
+                            "Authorization": "Bearer <?= $_SESSION['LOGIN']['access_token'] ?>"
+                        },
                     }).done(function(resp) {
                         Swal.fire({
                             text: 'อัพเดทข้อมูลเรียบร้อย',
@@ -207,6 +215,11 @@ require_once('../authen.php');
             $.ajax({
                 url: "<?= API_URL ?>" + `v2/${el}/all`,
                 method: "GET",
+                timeout: 0,
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": "Bearer <?= $_SESSION['LOGIN']['access_token'] ?>"
+                },
                 success: function(result) {
                     // console.log(result);
                     $("#" + el).html("");

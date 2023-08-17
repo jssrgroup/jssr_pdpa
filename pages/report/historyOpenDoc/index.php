@@ -88,8 +88,13 @@ require_once('../../authenSub.php');
         $(function() {
             $.ajax({
                 type: "GET",
-                url: "<?= API_URL ?>" + `v2/log`
-                // url: "<?= API_URL ?>" + `v2/document/report/expire`
+                url: "<?= API_URL ?>" + `v2/log`,
+                // url: "<?= API_URL ?>" + `v2/document/report/expire`,
+                timeout: 0,
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": "Bearer <?= $_SESSION['LOGIN']['access_token'] ?>"
+                },
             }).done(function(data) {
                 // console.log(data.data);
                 let tableData = []
@@ -180,6 +185,11 @@ require_once('../../authenSub.php');
                                     $.ajax({
                                         type: "POST",
                                         url: `<?= API_URL ?>v2/documentType/${id}/delete`,
+                                        timeout: 0,
+                                        headers: {
+                                            "Accept": "application/json",
+                                            "Authorization": "Bearer <?= $_SESSION['LOGIN']['access_token'] ?>"
+                                        },
                                     }).done(function() {
                                         Swal.fire({
                                             text: 'รายการของคุณถูกลบเรียบร้อย',
