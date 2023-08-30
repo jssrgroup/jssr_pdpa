@@ -15,7 +15,7 @@ require_once('../authen.php');
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>หน้าหลัก | <?= APP_NAME?></title>
+    <title>หน้าหลัก | <?= APP_NAME ?></title>
     <link rel="shortcut icon" type="image/x-icon" href="../../assets/images/favicon.ico">
     <!-- stylesheet -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit">
@@ -37,7 +37,7 @@ require_once('../authen.php');
                                 <div class="inner text-center">
                                     <h1 class="py-3">&nbsp;เอกสาร&nbsp;</h1>
                                 </div>
-                                <a href="<?= BASE_URL?>pages/documents/" class="small-box-footer py-3"> คลิกจัดการระบบ <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="<?= BASE_URL ?>pages/documents/" class="small-box-footer py-3"> คลิกจัดการระบบ <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                         <div class="col-lg-3 col-6">
@@ -45,7 +45,7 @@ require_once('../authen.php');
                                 <div class="inner text-center">
                                     <h1 class="py-3">ประเภทเอกสาร</h1>
                                 </div>
-                                <a href="<?= BASE_URL?>pages/documentType/" class="small-box-footer py-3"> คลิกจัดการระบบ <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="<?= BASE_URL ?>pages/documentType/" class="small-box-footer py-3"> คลิกจัดการระบบ <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
 
@@ -54,7 +54,7 @@ require_once('../authen.php');
                                 <div class="inner text-center">
                                     <h1 class="py-3">ผู้ดูแลระบบ</h1>
                                 </div>
-                                <a href="<?= BASE_URL?>pages/manager/" class="small-box-footer py-3"> คลิกจัดการระบบ <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="<?= BASE_URL ?>pages/manager/" class="small-box-footer py-3"> คลิกจัดการระบบ <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
 
@@ -63,7 +63,7 @@ require_once('../authen.php');
                                 <div class="inner text-center">
                                     <h1 class="py-3">ลูกค้า</h1>
                                 </div>
-                                <a href="<?= BASE_URL?>page/members/" class="small-box-footer py-3"> คลิกจัดการระบบ <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="<?= BASE_URL ?>page/members/" class="small-box-footer py-3"> คลิกจัดการระบบ <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -71,7 +71,7 @@ require_once('../authen.php');
                         <div class="col-lg-3">
                             <div class="small-box py-3 bg-white shadow">
                                 <div class="inner">
-                                    <h3>21 เอกสาร</h3>
+                                    <h3><span id="docAll"></span> เอกสาร</h3>
                                     <p class="text-danger">เอกสารทั้งหมด</p>
                                 </div>
                                 <div class="icon">
@@ -82,7 +82,7 @@ require_once('../authen.php');
                         <div class="col-lg-3">
                             <div class="small-box py-3 bg-white shadow">
                                 <div class="inner">
-                                    <h3>8 เอกสาร</h3>
+                                    <h3><span id="myDoc"></span> เอกสาร</h3>
                                     <p class="text-danger">เอกสารของฉัน</p>
                                 </div>
                                 <div class="icon">
@@ -93,7 +93,7 @@ require_once('../authen.php');
                         <div class="col-lg-3">
                             <div class="small-box py-3 bg-white shadow">
                                 <div class="inner">
-                                    <h3>3 เอกสาร</h3>
+                                    <h3><span id="docExpiring7Day"></span> เอกสาร</h3>
                                     <p class="text-danger">เอกสารหมดอายุใน 7 วัน</p>
                                 </div>
                                 <div class="icon">
@@ -104,7 +104,7 @@ require_once('../authen.php');
                         <div class="col-lg-3">
                             <div class="small-box py-3 bg-white shadow">
                                 <div class="inner">
-                                    <h3>1 เอกสาร</h3>
+                                    <h3><span id="docExpired"></span> เอกสาร</h3>
                                     <p class="text-danger">เอกสารหมดอายุแล้ว</p>
                                 </div>
                                 <div class="icon">
@@ -152,6 +152,35 @@ require_once('../authen.php');
     <script src="../../plugins/chart.js/Chart.min.js"></script>
     <script src="../../plugins/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js"></script>
     <script src="../../assets/js/pages/dashboard.js"></script>
+    <script>
+        const depId = <?= $_SESSION['LOGIN']['user']['role']['depId'] ?>;
+        const userId = <?= $_SESSION['LOGIN']['user']['role']['userId'] ?>;
+        $(function() {
+            $.ajax({
+                type: "GET",
+                url: "<?= API_URL ?>" + `v2/document/report/dashboard/${depId}/${userId}`,
+                timeout: 0,
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": "Bearer <?= $_SESSION['LOGIN']['access_token'] ?>"
+                },
+            }).done(function(data) {
+                // console.log(data.data[0]);
+                $('#docAll').html(data.data[0].count)
+                $('#myDoc').html(data.data[1].count)
+                $('#docExpiring7Day').html(data.data[2].count)
+                $('#docExpired').html(data.data[3].count)
+            }).fail(function() {
+                Swal.fire({
+                    text: 'ไม่สามารถเรียกดูข้อมูลได้',
+                    icon: 'error',
+                    confirmButtonText: 'ตกลง',
+                }).then(function() {
+                    location.assign('../dashboard')
+                })
+            })
+        })
+    </script>
 </body>
 
 </html>

@@ -30,12 +30,17 @@ require_once('../../authenSub.php');
     <link rel="stylesheet" href="<?= BASE_URL ?>plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <style>
         .warning {
-            background-color: yellow;
+            background-color: #FFC28B;
             /* Add other styles for highlighting */
         }
 
         .danger {
-            background-color: red;
+            background-color: #FE6D4E;
+            /* Add other styles for highlighting */
+        }
+
+        .remove {
+            background-color: #819898;
             /* Add other styles for highlighting */
         }
     </style>
@@ -88,8 +93,12 @@ require_once('../../authenSub.php');
         $(function() {
             $.ajax({
                 type: "GET",
-                url: "<?= API_URL ?>" + `v2/document/report/expire/${depId}/all`
-                // url: "<?= API_URL ?>" + `v2/document/report/expire`
+                url: "<?= API_URL ?>" + `v2/document/report/expired`,
+                timeout: 0,
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": "Bearer <?= $_SESSION['LOGIN']['access_token'] ?>"
+                },
             }).done(function(data) {
                 // console.log(data.data);
                 let tableData = []
@@ -97,19 +106,16 @@ require_once('../../authenSub.php');
                     tableData.push([
                         ++index,
                         item.id,
-                        item.ref_dep_id,
+                        // item.ref_dep_id,
+                        item.dep_desc,
                         item.create_doc_date,
-                        item.doc_type_id,
-                        item.doc_id,
+                        // item.doc_type_id,
+                        item.type_desc,
+                        // item.doc_id,
+                        item.doc_desc,
                         item.image_name,
                         item.expire_doc_date,
-                        item.document_expire_type,
-                        item.document_expire,
-                        item.doctype_expire_type,
-                        item.doctype_expire,
                         item.remain_date,
-                        item.doc_remain_date,
-                        item.type_remain_date,
                     ])
                 })
                 initDataTables(tableData)
@@ -138,7 +144,7 @@ require_once('../../authenSub.php');
                         {
                             title: "แผนก",
                             className: "align-middle", // Index of the column (0-based)
-                            "visible": false
+                            "visible": true
                         },
                         {
                             title: "วันที่สร้าง",
@@ -162,32 +168,8 @@ require_once('../../authenSub.php');
                         },
                         {
                             title: "จำนวนหมดอายุ",
-                            className: "align-middle"
-                        },
-                        {
-                            title: "เอกสารหมดอายุ",
-                            className: "align-middle"
-                        },
-                        {
-                            title: "จำนวนหมดอายุ",
-                            className: "align-middle"
-                        },
-                        {
-                            title: "ประเภทหมดอายุ",
-                            className: "align-middle"
-                        },
-                        {
-                            title: "",
-                            className: "align-middle", // Index of the column (0-based)
-                            "visible": false
-                        },      {
-                            title: "",
-                            className: "align-middle", // Index of the column (0-based)
-                            "visible": false
-                        },      {
-                            title: "",
-                            className: "align-middle", // Index of the column (0-based)
-                            "visible": false
+                            className: "align-middle",
+                            visible: false
                         },
                     ],
                     initComplete: function() {
@@ -245,19 +227,19 @@ require_once('../../authenSub.php');
                     }
                 })
 
-                table.rows().every(function() {
-                    var rowData = this.data();
-                    // console.log(rowData);
-                    var remain = parseInt(rowData[12]); // Assuming age is in the second column
-                    // console.log(remain);
-                    if (remain < 7) {
-                        $(this.node()).addClass('danger'); // Add the highlight class
-                    }
-
-                    if (remain < 20) {
-                        $(this.node()).addClass('warning'); // Add the highlight class
-                    }
-                });
+                // set row hightlight
+                // table.rows().every(function() {
+                //     // var rowData = this.data();
+                //     // // console.log(rowData);
+                //     // var remain = parseInt(rowData[8]); // Assuming age is in the second column
+                //     // console.log(remain);
+                //     // if (remain > -15) {
+                //     //     $(this.node()).addClass('warning'); // Add the highlight class
+                //     // } else
+                //     // if (remain  -31) {
+                //     //     $(this.node()).addClass('danger'); // Add the highlight class
+                //     // }
+                // });
             }
 
         })

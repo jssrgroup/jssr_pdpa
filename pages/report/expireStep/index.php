@@ -30,12 +30,17 @@ require_once('../../authenSub.php');
     <link rel="stylesheet" href="<?= BASE_URL ?>plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <style>
         .warning {
-            background-color: yellow;
+            background-color: #FFC28B;
             /* Add other styles for highlighting */
         }
 
         .danger {
-            background-color: red;
+            background-color: #FE6D4E;
+            /* Add other styles for highlighting */
+        }
+
+        .remove {
+            background-color: #819898;
             /* Add other styles for highlighting */
         }
     </style>
@@ -167,31 +172,35 @@ require_once('../../authenSub.php');
                         },
                         {
                             title: "จำนวนหมดอายุ",
-                            className: "align-middle"
+                            className: "align-middle",
+                            "visible": false
                         },
                         {
                             title: "เอกสารหมดอายุ",
-                            className: "align-middle"
+                            className: "align-middle",
+                            "visible": false
                         },
                         {
                             title: "จำนวนหมดอายุ",
-                            className: "align-middle"
+                            className: "align-middle",
+                            "visible": false
                         },
                         {
                             title: "ประเภทหมดอายุ",
-                            className: "align-middle"
+                            className: "align-middle",
+                            "visible": false
                         },
                         {
+                            title: "จำนวนหมดอายุ",
+                            className: "align-middle",
+                            "visible": true
+                        }, {
                             title: "",
-                            className: "align-middle", // Index of the column (0-based)
+                            className: "align-middle",
                             "visible": false
                         }, {
                             title: "",
-                            className: "align-middle", // Index of the column (0-based)
-                            "visible": false
-                        }, {
-                            title: "",
-                            className: "align-middle", // Index of the column (0-based)
+                            className: "align-middle",
                             "visible": false
                         },
                     ],
@@ -259,10 +268,14 @@ require_once('../../authenSub.php');
                     var rowData = this.data();
                     // console.log(rowData);
                     var remain = parseInt(rowData[12]); // Assuming age is in the second column
-                    // console.log(remain);
+                    console.log(remain);
+                    if (remain < 0) {
+                        $(this.node()).addClass('remove'); // Add the highlight class
+                    }else
+
                     if (remain < 7) {
                         $(this.node()).addClass('danger'); // Add the highlight class
-                    }
+                    }else
 
                     if (remain < 20) {
                         $(this.node()).addClass('warning'); // Add the highlight class

@@ -1,7 +1,7 @@
 <?php
 
 require "config.php";
-echo '<pre>', print_r($_SESSION, 1), '</pre>';
+// echo '<pre>', print_r($_SESSION, 1), '</pre>';
 ?>
 <!DOCTYPE html>
 <html>
