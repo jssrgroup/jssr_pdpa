@@ -93,7 +93,7 @@ require_once('../../authenSub.php');
         $(function() {
             $.ajax({
                 type: "GET",
-                url: "<?= API_URL ?>" + `v2/document/report/expired`,
+                url: "<?= API_URL ?>" + `v2/document/report/${depId}/expired`,
                 timeout: 0,
                 headers: {
                     "Accept": "application/json",

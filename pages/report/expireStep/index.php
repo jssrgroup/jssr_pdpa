@@ -193,7 +193,7 @@ require_once('../../authenSub.php');
                         {
                             title: "จำนวนหมดอายุ",
                             className: "align-middle",
-                            "visible": true
+                            "visible": false
                         }, {
                             title: "",
                             className: "align-middle",

@@ -75,7 +75,7 @@ require_once('../authen.php');
                                     <p class="text-danger">เอกสารทั้งหมด</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="fas fa-chart-bar"></i>
+                                    <i class="fas fa-file-alt"></i>
                                 </div>
                             </div>
                         </div>
@@ -86,7 +86,7 @@ require_once('../authen.php');
                                     <p class="text-danger">เอกสารของฉัน</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="fas fa-chart-area"></i>
+                                    <i class="fas fa-file-signature"></i>
                                 </div>
                             </div>
                         </div>
@@ -97,7 +97,7 @@ require_once('../authen.php');
                                     <p class="text-danger">เอกสารหมดอายุใน 7 วัน</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="fas fa-cart-arrow-down"></i>
+                                    <i class="fas fa-file-export"></i>
                                 </div>
                             </div>
                         </div>
@@ -108,7 +108,7 @@ require_once('../authen.php');
                                     <p class="text-danger">เอกสารหมดอายุแล้ว</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="fas fa-users"></i>
+                                    <i class="fas fa-file-excel"></i>
                                 </div>
                             </div>
                         </div>
