@@ -115,9 +115,33 @@ function isActive($data, $step = 1)
                 </li>
                 <li class="nav-header">รายงาน</li>
                 <li class="nav-item">
+                    <a href="<?= BASE_URL ?>pages/report/docAll" class="nav-link <?php echo isActive('docAll', 2) ?>">
+                        <i class="nav-icon fas fa-solid fa-file text-primary"></i>
+                        <p>เอกสารทั้งหมด</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= BASE_URL ?>pages/report/docMe" class="nav-link <?php echo isActive('docMe', 2) ?>">
+                        <i class="nav-icon fas fa-solid fa-file text-info"></i>
+                        <p>เอกสารของฉัน</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="<?= BASE_URL ?>pages/report/expireStep" class="nav-link <?php echo isActive('expireStep', 2) ?>">
                         <i class="nav-icon fas fa-solid fa-file text-warning"></i>
                         <p>เอกสารใกล้หมดอายุ</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= BASE_URL ?>pages/report/expiring" class="nav-link <?php echo isActive('expiring', 2) ?>">
+                        <i class="nav-icon fas fa-solid fa-file text-indigo"></i>
+                        <p>เอกสารหมดอายุใน 7 วัน</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= BASE_URL ?>pages/report/expired" class="nav-link <?php echo isActive('expired', 2) ?>">
+                        <i class="nav-icon fas fa-solid fa-file text-info"></i>
+                        <p>เอกสารหมดอายุแล้ว</p>
                     </a>
                 </li>
                 <li class="nav-item">

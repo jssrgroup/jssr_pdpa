@@ -35,7 +35,7 @@ require_once('../authen.php');
                         <div class="col-lg-3 col-6">
                             <div class="small-box bg-info shadow">
                                 <div class="inner text-center">
-                                    <h1 class="py-3">&nbsp;เอกสาร&nbsp;</h1>
+                                    <h1 class="py-3">เอกสาร</h1>
                                 </div>
                                 <a href="<?= BASE_URL ?>pages/documents/" class="small-box-footer py-3"> คลิกจัดการระบบ <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
@@ -61,56 +61,65 @@ require_once('../authen.php');
                         <div class="col-lg-3 col-6">
                             <div class="small-box bg-success shadow">
                                 <div class="inner text-center">
-                                    <h1 class="py-3">ลูกค้า</h1>
+                                    <h1 class="py-3">แผนก</h1>
                                 </div>
-                                <a href="<?= BASE_URL ?>page/members/" class="small-box-footer py-3"> คลิกจัดการระบบ <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="<?= BASE_URL ?>pages/department/" class="small-box-footer py-3"> คลิกจัดการระบบ <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-3">
-                            <div class="small-box py-3 bg-white shadow">
-                                <div class="inner">
-                                    <h3><span id="docAll"></span> เอกสาร</h3>
-                                    <p class="text-danger">เอกสารทั้งหมด</p>
+                            <a href="<?= BASE_URL ?>pages/report/docAll/">
+                                <div class="small-box py-3 bg-white shadow">
+                                    <div class="inner">
+                                        <h3><span id="docAll"></span> เอกสาร</h3>
+                                        <p class="text-danger">เอกสารทั้งหมด</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-file-alt"></i>
+                                    </div>
                                 </div>
-                                <div class="icon">
-                                    <i class="fas fa-file-alt"></i>
-                                </div>
-                            </div>
+                            </a>
                         </div>
                         <div class="col-lg-3">
-                            <div class="small-box py-3 bg-white shadow">
-                                <div class="inner">
-                                    <h3><span id="myDoc"></span> เอกสาร</h3>
-                                    <p class="text-danger">เอกสารของฉัน</p>
+                            <a href="<?= BASE_URL ?>pages/report/docMe/">
+                                <div class="small-box py-3 bg-white shadow">
+                                    <div class="inner">
+                                        <h3><span id="myDoc"></span> เอกสาร</h3>
+                                        <p class="text-danger">เอกสารของฉัน</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-file-signature"></i>
+                                    </div>
                                 </div>
-                                <div class="icon">
-                                    <i class="fas fa-file-signature"></i>
+                            </a>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <a href="<?= BASE_URL ?>pages/report/expiring/">
+                                <div class="small-box py-3 bg-white shadow">
+                                    <div class="inner">
+                                        <h3><span id="docExpiring7Day"></span> เอกสาร</h3>
+                                        <p class="text-danger">เอกสารหมดอายุใน 7 วัน</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-file-export"></i>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                         <div class="col-lg-3">
-                            <div class="small-box py-3 bg-white shadow">
-                                <div class="inner">
-                                    <h3><span id="docExpiring7Day"></span> เอกสาร</h3>
-                                    <p class="text-danger">เอกสารหมดอายุใน 7 วัน</p>
+                            <a href="<?= BASE_URL ?>pages/report/expired/">
+                                <div class="small-box py-3 bg-white shadow">
+                                    <div class="inner">
+                                        <h3><span id="docExpired"></span> เอกสาร</h3>
+                                        <p class="text-danger">เอกสารหมดอายุแล้ว</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-file-excel"></i>
+                                    </div>
                                 </div>
-                                <div class="icon">
-                                    <i class="fas fa-file-export"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="small-box py-3 bg-white shadow">
-                                <div class="inner">
-                                    <h3><span id="docExpired"></span> เอกสาร</h3>
-                                    <p class="text-danger">เอกสารหมดอายุแล้ว</p>
-                                </div>
-                                <div class="icon">
-                                    <i class="fas fa-file-excel"></i>
-                                </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                     <div class="row d-none">

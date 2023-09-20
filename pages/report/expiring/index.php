@@ -6,8 +6,10 @@
  * @link https://appzstory.dev
  * @author Yothin Sapsamran (Jame AppzStory Studio)
  */
-require_once('../authen.php');
-// echo '<pre>', print_r($_SESSION['LOGIN'], 1), '</pre>';
+require_once('../../authenSub.php');
+
+// echo '<pre>', print_r($_SERVER, 1), '</pre>';
+// echo $_SERVER['DOCUMENT_ROOT'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +17,7 @@ require_once('../authen.php');
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>จัดการเอกสาร | <?= APP_NAME ?></title>
+    <title>รายงานเอกสารหมดอายุใน 7 วัน | <?= APP_NAME ?></title>
     <link rel="shortcut icon" type="image/x-icon" href="<?= BASE_URL ?>assets/images/favicon.ico">
     <!-- stylesheet -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit">
@@ -26,11 +28,19 @@ require_once('../authen.php');
     <!-- Datatables -->
     <link rel="stylesheet" href="<?= BASE_URL ?>plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-
     <style>
-        
+        .warning {
+            background-color: #FFC28B;
+            /* Add other styles for highlighting */
+        }
+
         .danger {
             background-color: #FE6D4E;
+            /* Add other styles for highlighting */
+        }
+
+        .remove {
+            background-color: #819898;
             /* Add other styles for highlighting */
         }
     </style>
@@ -38,26 +48,23 @@ require_once('../authen.php');
 
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
-        <?php include_once($_SERVER['DOCUMENT_ROOT'] . '/pages/includes/sidebar.php') ?>
+        <?php require_once($_SERVER['DOCUMENT_ROOT'] . "/pages/includes/sidebar.php") ?>
         <div class="content-wrapper pt-3">
             <!-- Main content -->
             <div class="content">
                 <div class="container-fluid">
-                    <div class="row justify-content-center">
+                    <div class="row">
                         <div class="col-12">
                             <div class="card shadow">
                                 <div class="card-header border-0 pt-4">
                                     <h4>
-                                        <i class="fas fa-file-pdf fa-lg"></i>
-                                        เอกสาร
+                                        <i class="fas  fa-solid fa-file text-indigo"></i>
+                                        เอกสารหมดอายุใน 7 วัน
                                     </h4>
-                                    <a href="form-create.php" class="btn btn-primary mt-3">
-                                        <i class="fas fa-plus"></i>
-                                        เพิ่มข้อมูล
-                                    </a>
                                 </div>
                                 <div class="card-body">
-                                    <table id="logs" class="table table-hover" width="100%"></table>
+                                    <table id="logs" class="table table-hover" width="100%">
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -65,11 +72,8 @@ require_once('../authen.php');
                 </div>
             </div>
         </div>
-        <?php include_once($_SERVER['DOCUMENT_ROOT'] . '/pages/includes/footer.php') ?>
+        <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/pages/includes/footer.php') ?>
     </div>
-    <form id="preview" action="<?= BASE_URL ?>pages/viewer/pdf/index.php" method="post" target="_blank">
-        <input type="hidden" name="e" id="e">
-    </form>
 
     <!-- scripts -->
     <script src="<?= BASE_URL ?>plugins/jquery/jquery.min.js"></script>
@@ -84,43 +88,34 @@ require_once('../authen.php');
     <script src="<?= BASE_URL ?>plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 
     <script>
-        const url = '<?= API_URL ?>'
-        const depId = '<?= $_SESSION['LOGIN']['user']['role']['depId']  ?>'
+        const depId = <?= $_SESSION['LOGIN']['user']['role']['depId'] ?>;
+        const userId = <?= $_SESSION['LOGIN']['user']['role']['userId'] ?>;
         $(function() {
             $.ajax({
                 type: "GET",
-                url: `${url}v2/document/${depId}/all`,
+                url: "<?= API_URL ?>" + `v2/document/report/expiring/${depId}/all`,
                 timeout: 0,
                 headers: {
                     "Accept": "application/json",
                     "Authorization": "Bearer <?= $_SESSION['LOGIN']['access_token'] ?>"
                 },
             }).done(function(data) {
+                // console.log(data.data);
                 let tableData = []
                 data.data.forEach(function(item, index) {
                     tableData.push([
-                        // `<span class="btn btn-outline-${item.ref_doc_type_id==1?'success':item.ref_doc_type_id==2?'info':item.ref_doc_type_id==3?'warning':'primary'}"> ${item.ref_doc_type} </span>`,
-                        // `<span class="btn btn-outline-info"> ${item.ref_doc_type}[${item.id}] </span>`,
-                        // item.id,
-                        item.ref_doc_type,
-                        item.ref_doc,
-                        item.ref_dep,
+                        ++index,
+                        item.id,
+                        // item.ref_dep_id,
+                        item.dep_desc,
+                        item.create_doc_date,
+                        // item.doc_type_id,
+                        // item.type_desc,
+                        // item.doc_id,
+                        // item.doc_desc,
                         item.image_name,
-                        // `<a href="../members/profile.php?id=${item.mem_id}">
-                        //     ${item.file_name}
-                        // </a>`,
-                        // item.ref,
-                        `<span class="text-muted small">${item.expire_date_at}</span>`,
-                        item.expire_num,
-                        `<span class="text-muted"> ${item.ref_user} </span>  `,
-                        // `<a href="info.php?o_id=${item.id}" class="btn btn-info">
-                        //     <i class="fas fa-search"></i> ดูข้อมูล
-                        // </a>`,
-                        `<div class="btn-group" role="group">
-                            <button type="button" class="btn btn-info" id="preview" data-doc-id="${item.id}" data-file-name="${item.file_name}">
-                                <i class="far fa-eye"></i> ดูู
-                            </button>
-                        </div>`
+                        item.expire_doc_date,
+                        item.remain_date,
                     ])
                 })
                 initDataTables(tableData)
@@ -138,77 +133,71 @@ require_once('../authen.php');
                 var table = $('#logs').DataTable({
                     data: tableData,
                     columns: [{
-                            title: "ประเภทเอกสาร",
+                            title: "ลำดับ",
                             className: "align-middle"
                         },
                         {
-                            title: "เอกสาร",
-                            className: "align-middle"
+                            title: "#",
+                            className: "align-middle", // Index of the column (0-based)
+                            "visible": false
                         },
                         {
                             title: "แผนก",
+                            className: "align-middle", // Index of the column (0-based)
+                            "visible": true
+                        },
+                        {
+                            title: "วันที่สร้าง",
                             className: "align-middle"
                         },
+                        // {
+                        //     title: "ชื่อประเภทเอกสาร",
+                        //     className: "align-middle"
+                        // },
+                        // {
+                        //     title: "เอกสาร",
+                        //     className: "align-middle"
+                        // },
                         {
                             title: "ชื่อเอกสาร",
                             className: "align-middle"
                         },
-                        // {
-                        //     title: "ชื่อไฟล์เอกสาร",
-                        //     className: "align-middle"
-                        // },
-                        // {
-                        //     title: "อ้างอิง",
-                        //     className: "align-middle"
-                        // },
                         {
-                            title: "วันที่เอกสารหมดอายุ",
+                            title: "วันหมดอายุ",
                             className: "align-middle"
                         },
                         {
-                            title: "xxx",
+                            title: "จำนวนหมดอายุ",
                             className: "align-middle",
-                            "visible": true
+                            visible: false
                         },
-                        {
-                            title: "ผู้บันทึก",
-                            className: "align-middle"
-                        },
-                        {
-                            title: "จัดการ",
-                            className: "align-middle"
-                        }
                     ],
                     initComplete: function() {
-                        $(document).on('click', '#preview', function() {
-                            const fileName = $(this).data('file-name')
-                            const docId = $(this).data('doc-id')
-                            // window.open("<//?= BASE_URL ?>"+`pages/viewer/pdf/index.php?e=${fileName}`, "_blank", "noopener,noreferrer");
-                            // console.log(docId);
-                            // $('#e').val(fileName)
-                            // console.log($('#e').val());
-                            // // $('#preview').submit()
-                            // document.getElementById("preview").submit();
-
-                            $.ajax({
-                                url: `${url}v2/document/${fileName}`,
-                                method: 'GET',
-                                timeout: 0,
-                                headers: {
-                                    "Accept": "application/json",
-                                    "Authorization": "Bearer <?= $_SESSION['LOGIN']['access_token'] ?>"
-                                },
-                                data: {
-                                    docId: docId
-                                },
-                                success: function(response) {
-                                    // console.log(response);
-                                    window.open(response.url, "_blank", "noopener,noreferrer");
-                                },
-                                error: function(xhr, status, error) {
-                                    console.log(error);
+                        $(document).on('click', '#delete', function() {
+                            let id = $(this).data('id')
+                            let index = $(this).data('index')
+                            Swal.fire({
+                                text: "คุณแน่ใจหรือไม่...ที่จะลบรายการนี้?",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonText: 'ใช่! ลบเลย',
+                                cancelButtonText: 'ยกเลิก'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    $.ajax({
+                                        type: "POST",
+                                        url: `<?= API_URL ?>v2/documentType/${id}/delete`,
+                                    }).done(function() {
+                                        Swal.fire({
+                                            text: 'รายการของคุณถูกลบเรียบร้อย',
+                                            icon: 'success',
+                                            confirmButtonText: 'ตกลง',
+                                        }).then((result) => {
+                                            location.reload()
+                                        })
+                                    })
                                 }
-                            });
+                            })
                         })
                     },
                     responsive: {
@@ -216,7 +205,7 @@ require_once('../authen.php');
                             display: $.fn.dataTable.Responsive.display.modal({
                                 header: function(row) {
                                     var data = row.data()
-                                    return 'ใบสั่งซื้อ: ' + data[1]
+                                    return 'ผู้ใช้งาน: ' + data[1]
                                 }
                             }),
                             renderer: $.fn.dataTable.Responsive.renderer.tableAll({
@@ -238,16 +227,19 @@ require_once('../authen.php');
                     }
                 })
 
-                table.rows().every(function() {
-                    var rowData = this.data();
-                    // console.log(rowData);
-                    var remain = parseInt(rowData[5]); // Assuming age is in the second column
-                    // console.log(remain);
-
-                    if (remain < 0) {
-                        $(this.node()).addClass('danger'); // Add the highlight class
-                    } 
-                });
+                // set row hightlight
+                // table.rows().every(function() {
+                //     // var rowData = this.data();
+                //     // // console.log(rowData);
+                //     // var remain = parseInt(rowData[8]); // Assuming age is in the second column
+                //     // console.log(remain);
+                //     // if (remain > -15) {
+                //     //     $(this.node()).addClass('warning'); // Add the highlight class
+                //     // } else
+                //     // if (remain  -31) {
+                //     //     $(this.node()).addClass('danger'); // Add the highlight class
+                //     // }
+                // });
             }
 
         })
