@@ -48,13 +48,13 @@ require "config.php";
                 </div>
                 <button type="submit" class="btn btn-primary btn-block"> เข้าสู่ระบบ</button>
               </form>
-              <div>
+              <!-- <div>
                 <button type="button" class="btn btn-default btn-block acc-ia">IA</button>
                 <button type="button" class="btn btn-primary btn-block acc-am">AM</button>
                 <button type="button" class="btn btn-danger btn-block acc-acc">บัญชี</button>
                 <button type="button" class="btn btn-warning btn-block acc-law">กฎหมาย</button>
                 <button type="button" class="btn btn-info btn-block acc-hr">HR</button>
-              </div>
+              </div> -->
             </div>
           </div>
         </section>
@@ -71,6 +71,7 @@ require "config.php";
       /** Ajax Submit Login */
       $("#formLogin").submit(function(e) {
         e.preventDefault()
+        console.log($(this).serialize());
         $.ajax({
           type: "POST",
           url: "<?= BASE_URL?>service/auth/login.php",

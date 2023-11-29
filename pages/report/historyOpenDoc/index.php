@@ -104,7 +104,7 @@ require_once('../../authenSub.php');
                         item.id,
                         item.userId,
                         item.docId,
-                        item.createdate,
+                        dateFormat(item.createdate),
                         item.user,
                         item.doc,
                         item.class,
@@ -246,6 +246,53 @@ require_once('../../authenSub.php');
             }
 
         })
+
+        function parseDateTimeString(dateTimeString) {
+            // Split the date and time parts
+            var dateTimeParts = dateTimeString.split(' ');
+
+            // Parse the date part
+            var dateParts = dateTimeParts[0].split('/');
+            // Note: months are zero-based in JavaScript Dates
+            var year = parseInt(dateParts[2], 10);
+            var month = parseInt(dateParts[1], 10) - 1;
+            var day = parseInt(dateParts[0], 10);
+
+            // Parse the time part
+            var timeParts = dateTimeParts[1].split(':');
+            var hours = parseInt(timeParts[0], 10);
+            var minutes = parseInt(timeParts[1], 10);
+            var seconds = parseInt(timeParts[2], 10);
+
+            // Create a Date object
+            return new Date(year, month, day, hours, minutes, seconds);
+        }
+
+        function formatDateTime(date) {
+            // Ensure the input is a Date object
+            if (!(date instanceof Date)) {
+                throw new Error('Invalid date object');
+            }
+
+            // Get date and time components
+            var day = ('0' + date.getDate()).slice(-2);
+            var month = ('0' + (date.getMonth() + 1)).slice(-2); // Months are zero-based
+            var year = date.getFullYear();
+            var hours = ('0' + date.getHours()).slice(-2);
+            var minutes = ('0' + date.getMinutes()).slice(-2);
+            var seconds = ('0' + date.getSeconds()).slice(-2);
+
+            // Format the date string
+            var formattedDate = day + '/' + month + '/' + year + ' ' + hours + ':' + minutes + ':' + seconds;
+
+            return formattedDate;
+        }
+
+        function dateFormat(date) {
+            var newDate = parseDateTimeString(date);
+            newDate.setHours(newDate.getHours() + 7);
+            return formatDateTime(newDate);;
+        }
     </script>
 </body>
 

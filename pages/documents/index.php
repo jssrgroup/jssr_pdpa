@@ -168,7 +168,7 @@ require_once('../authen.php');
                         {
                             title: "xxx",
                             className: "align-middle",
-                            "visible": true
+                            "visible": false
                         },
                         {
                             title: "ผู้บันทึก",
