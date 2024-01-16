@@ -57,49 +57,6 @@ function isActive($data, $step = 1)
                         <p>หน้าหลัก</p>
                     </a>
                 </li>
-                <li class="nav-header">ตั้งค่า</li>
-                <li class="nav-item d-none">
-                    <a href="<?= BASE_URL ?>pages/useradmin/" class="nav-link <?php echo isActive('useradmin') ?>">
-                        <i class="nav-icon fas fa-user-cog text-maroon"></i>
-                        <p>useradmin</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= BASE_URL ?>pages/manager/" class="nav-link <?php echo isActive('manager') ?>">
-                        <i class="nav-icon fas fa-user-cog text-cyan"></i>
-                        <p>ผู้ดูแลระบบ</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= BASE_URL ?>pages/department/" class="nav-link <?php echo isActive('department') ?>">
-                        <i class="nav-icon fas fa-building text-teal"></i>
-                        <p>แผนก</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= BASE_URL ?>pages/documentType/" class="nav-link <?php echo isActive('documentType') ?>">
-                        <i class="nav-icon fas fa-solid fa-folder-open text-fuchsia"></i>
-                        <p>ประเภทเอกสาร</p>
-                    </a>
-                </li>
-                <li class="nav-item d-none">
-                    <a href="<?= BASE_URL ?>pages/employees/" class="nav-link <?php echo isActive('employees') ?>">
-                        <i class="nav-icon fas fa-user text-yellow"></i>
-                        <p>รายชื่อพนักงาน</p>
-                    </a>
-                </li>
-                <li class="nav-item d-none">
-                    <a href="<?= BASE_URL ?>pages/members/" class="nav-link <?php echo isActive('members') ?>">
-                        <i class="nav-icon fas fa-users text-indigo"></i>
-                        <p>รายชื่อลูกค้า</p>
-                    </a>
-                </li>
-                <li class="nav-item d-none">
-                    <a href="<?= BASE_URL ?>pages/products/" class="nav-link <?php echo isActive('products') ?>">
-                        <i class="nav-icon fas fa-shopping-cart"></i>
-                        <p>รายการสินค้า</p>
-                    </a>
-                </li>
                 <li class="nav-header">โปรแกรม</li>
                 <li class="nav-item d-none">
                     <a href="<?= BASE_URL ?>pages/orders/" class="nav-link <?php echo isActive('orders') ?>">
@@ -163,7 +120,55 @@ function isActive($data, $step = 1)
                         <p>ออกจากระบบ</p>
                     </a>
                 </li>
+                <li class="nav-header">ตั้งค่า</li>
+                <li class="nav-item d-none">
+                    <a href="<?= BASE_URL ?>pages/useradmin/" class="nav-link <?php echo isActive('useradmin') ?>">
+                        <i class="nav-icon fas fa-user-cog text-maroon"></i>
+                        <p>useradmin</p>
+                    </a>
+                </li>
+                <?php if ($_SESSION['LOGIN']['user']['role']['roleId'] == 1) : ?>
+                    <li class="nav-item">
+                        <a href="<?= BASE_URL ?>pages/manager/" class="nav-link <?php echo isActive('manager') ?>">
+                            <i class="nav-icon fas fa-user-cog text-cyan"></i>
+                            <p>ผู้ดูแลระบบ</p>
+                        </a>
+                    </li>
+                <?php endif ?>
+                <li class="nav-item">
+                    <a href="<?= BASE_URL ?>pages/department/" class="nav-link <?php echo isActive('department') ?>">
+                        <i class="nav-icon fas fa-building text-teal"></i>
+                        <p>แผนก</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= BASE_URL ?>pages/documentType/" class="nav-link <?php echo isActive('documentType') ?>">
+                        <i class="nav-icon fas fa-solid fa-folder-open text-fuchsia"></i>
+                        <p>ประเภทเอกสาร</p>
+                    </a>
+                </li>
+                <li class="nav-item d-none">
+                    <a href="<?= BASE_URL ?>pages/employees/" class="nav-link <?php echo isActive('employees') ?>">
+                        <i class="nav-icon fas fa-user text-yellow"></i>
+                        <p>รายชื่อพนักงาน</p>
+                    </a>
+                </li>
+                <li class="nav-item d-none">
+                    <a href="<?= BASE_URL ?>pages/members/" class="nav-link <?php echo isActive('members') ?>">
+                        <i class="nav-icon fas fa-users text-indigo"></i>
+                        <p>รายชื่อลูกค้า</p>
+                    </a>
+                </li>
+                <li class="nav-item d-none">
+                    <a href="<?= BASE_URL ?>pages/products/" class="nav-link <?php echo isActive('products') ?>">
+                        <i class="nav-icon fas fa-shopping-cart"></i>
+                        <p>รายการสินค้า</p>
+                    </a>
+                </li>
             </ul>
         </nav>
+    </div>
+    <div>
+        <?= '<pre>', print_r($_SESSION, 1), '</pre>' ?>
     </div>
 </aside>
