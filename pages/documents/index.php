@@ -1,13 +1,5 @@
 <?php
-
-/**
- * Page Manager
- * 
- * @link https://appzstory.dev
- * @author Yothin Sapsamran (Jame AppzStory Studio)
- */
 require_once('../authen.php');
-// echo '<pre>', print_r($_SESSION['LOGIN'], 1), '</pre>';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,7 +22,6 @@ require_once('../authen.php');
     <style>
         .danger {
             background-color: #FE6D4E;
-            /* Add other styles for highlighting */
         }
     </style>
 </head>
@@ -50,7 +41,7 @@ require_once('../authen.php');
                                         <i class="fas fa-file-pdf fa-lg"></i>
                                         เอกสาร
                                     </h4>
-                                    <a href="<?=BASE_URL?>pages/documents/form-create.php" class="btn btn-primary mt-3">
+                                    <a href="<?= BASE_URL ?>pages/documents/form-create.php" class="btn btn-primary mt-3">
                                         <i class="fas fa-plus"></i>
                                         เพิ่มข้อมูล
                                     </a>
@@ -85,6 +76,7 @@ require_once('../authen.php');
     <script>
         const url = '<?= API_URL ?>'
         const depId = '<?= $_SESSION['LOGIN']['user']['role']['depId']  ?>'
+        const userId = '<?= $_SESSION['LOGIN']['user']['id']  ?>'
         $(function() {
             $.ajax({
                 type: "GET",
@@ -97,6 +89,13 @@ require_once('../authen.php');
             }).done(function(data) {
                 let tableData = []
                 data.data.forEach(function(item, index) {
+                    const del =
+                        (item.ref_user_id == userId) ?
+                        `<div class="btn-group" role="group">
+                            <button type="button" class="btn btn-danger" id="delete" data-doc-id="${item.id}" data-image-name="${item.image_name}">
+                                <i class="far fa-trash-alt"></i> ลบ
+                            </button>
+                        </div>` : ''
                     tableData.push([
                         // `<span class="btn btn-outline-${item.ref_doc_type_id==1?'success':item.ref_doc_type_id==2?'info':item.ref_doc_type_id==3?'warning':'primary'}"> ${item.ref_doc_type} </span>`,
                         // `<span class="btn btn-outline-info"> ${item.ref_doc_type}[${item.id}] </span>`,
@@ -119,12 +118,7 @@ require_once('../authen.php');
                             <button type="button" class="btn btn-info" id="preview" data-doc-id="${item.id}" data-file-name="${item.file_name}">
                                 <i class="far fa-eye"></i> ดูู
                             </button>
-                        </div>
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-danger" id="delete" data-doc-id="${item.id}" data-image-name="${item.image_name}">
-                                <i class="far fa-trash-alt"></i> ลบ
-                            </button>
-                        </div>`
+                        </div> ${del}`
                     ])
                 })
                 initDataTables(tableData)

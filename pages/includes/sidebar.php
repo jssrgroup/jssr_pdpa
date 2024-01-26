@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Main Sidebar
  * 
@@ -167,8 +166,5 @@ function isActive($data, $step = 1)
                 </li>
             </ul>
         </nav>
-    </div>
-    <div>
-        <?= '<pre>', print_r($_SESSION, 1), '</pre>' ?>
     </div>
 </aside>
