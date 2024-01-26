@@ -28,7 +28,6 @@ require_once('../authen.php');
     <link rel="stylesheet" href="<?= BASE_URL ?>plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 
     <style>
-        
         .danger {
             background-color: #FE6D4E;
             /* Add other styles for highlighting */
@@ -51,7 +50,7 @@ require_once('../authen.php');
                                         <i class="fas fa-file-pdf fa-lg"></i>
                                         เอกสาร
                                     </h4>
-                                    <a href="form-create.php" class="btn btn-primary mt-3">
+                                    <a href="<?=BASE_URL?>pages/documents/form-create.php" class="btn btn-primary mt-3">
                                         <i class="fas fa-plus"></i>
                                         เพิ่มข้อมูล
                                     </a>
@@ -119,6 +118,11 @@ require_once('../authen.php');
                         `<div class="btn-group" role="group">
                             <button type="button" class="btn btn-info" id="preview" data-doc-id="${item.id}" data-file-name="${item.file_name}">
                                 <i class="far fa-eye"></i> ดูู
+                            </button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-danger" id="delete" data-doc-id="${item.id}" data-image-name="${item.image_name}">
+                                <i class="far fa-trash-alt"></i> ลบ
                             </button>
                         </div>`
                     ])
@@ -210,6 +214,62 @@ require_once('../authen.php');
                                 }
                             });
                         })
+                        $(document).on('click', '#delete2', function() {
+                            var currentHost = window.location.hostname;
+
+                            console.log("Host:", currentHost);
+
+                            var currentURL = window.location.href;
+
+                            console.log("Current URL:", currentURL);
+
+                        })
+                        $(document).on('click', '#delete', function() {
+                            const imageName = $(this).data('image-name')
+                            const docId = $(this).data('doc-id')
+                            console.log(imageName);
+                            console.log(docId);
+
+                            Swal.fire({
+                                title: `ต้องการลบเอกสาร ${imageName} ใช่หรือไม่`,
+                                showDenyButton: false,
+                                showCancelButton: true,
+                                confirmButtonText: "ลบ",
+                                denyButtonText: `Don't save`
+                            }).then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                if (result.isConfirmed) {
+                                    $.ajax({
+                                        url: `${url}v2/document/${docId}`,
+                                        method: 'DELETE',
+                                        timeout: 0,
+                                        headers: {
+                                            "Accept": "application/json",
+                                            "Authorization": "Bearer <?= $_SESSION['LOGIN']['access_token'] ?>"
+                                        },
+                                        success: function(response) {
+                                            Swal.fire({
+                                                icon: "success",
+                                                title: `${imageName} ลบแล้ว`,
+                                                showConfirmButton: false,
+                                                timer: 1500,
+                                                timerProgressBar: true
+                                            }).then((result) => {
+                                                if (result.dismiss === Swal.DismissReason.timer) {
+                                                    window.location = window.location.href;
+                                                }
+                                            });
+                                        },
+                                        error: function(xhr, status, error) {
+                                            console.log(error);
+                                        }
+                                    });
+
+                                } else if (result.isDenied) {
+                                    Swal.fire("Changes are not saved", "", "info");
+                                }
+                            });
+                        })
                     },
                     responsive: {
                         details: {
@@ -246,7 +306,7 @@ require_once('../authen.php');
 
                     if (remain < 0) {
                         $(this.node()).addClass('danger'); // Add the highlight class
-                    } 
+                    }
                 });
             }
 

@@ -113,13 +113,6 @@ function isActive($data, $step = 1)
                         <p>การเข้าดูเอกสาร</p>
                     </a>
                 </li>
-                <li class="nav-header">บัญชีของเรา</li>
-                <li class="nav-item">
-                    <a href="<?= BASE_URL ?>pages/logout.php" id="logout" class="nav-link">
-                        <i class="nav-icon fas fa-sign-out-alt"></i>
-                        <p>ออกจากระบบ</p>
-                    </a>
-                </li>
                 <li class="nav-header">ตั้งค่า</li>
                 <li class="nav-item d-none">
                     <a href="<?= BASE_URL ?>pages/useradmin/" class="nav-link <?php echo isActive('useradmin') ?>">
@@ -163,6 +156,13 @@ function isActive($data, $step = 1)
                     <a href="<?= BASE_URL ?>pages/products/" class="nav-link <?php echo isActive('products') ?>">
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>รายการสินค้า</p>
+                    </a>
+                </li>
+                <li class="nav-header">บัญชีของเรา</li>
+                <li class="nav-item">
+                    <a href="<?= BASE_URL ?>pages/logout.php" id="logout" class="nav-link">
+                        <i class="nav-icon fas fa-sign-out-alt"></i>
+                        <p>ออกจากระบบ</p>
                     </a>
                 </li>
             </ul>
