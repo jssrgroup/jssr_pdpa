@@ -88,9 +88,9 @@ require_once('../../authenSub.php');
     <script src="<?= BASE_URL ?>plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 
     <script>
-        const depId = <?= $_SESSION['LOGIN']['user']['role']['depId'] ?>;
+                const depId = <?= $_SESSION['LOGIN']['user']['role']['depId'] ?>;
         const userId = <?= $_SESSION['LOGIN']['user']['role']['userId'] ?>;
-        $(function() {
+                $(function() {
             $.ajax({
                 type: "GET",
                 url: "<?= API_URL ?>" + `v2/document/report/${depId}/expired`,

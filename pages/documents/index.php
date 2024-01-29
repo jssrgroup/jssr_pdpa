@@ -234,8 +234,8 @@ require_once('../authen.php');
                                 /* Read more about isConfirmed, isDenied below */
                                 if (result.isConfirmed) {
                                     $.ajax({
-                                        url: `${url}v2/document/${docId}`,
-                                        method: 'DELETE',
+                                        url: `${url}v2/document/report/expireDelByUserUpdate/${docId}`,
+                                        method: 'POST',
                                         timeout: 0,
                                         headers: {
                                             "Accept": "application/json",
